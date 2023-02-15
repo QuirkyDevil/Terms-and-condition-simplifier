@@ -1,0 +1,6 @@
+black
+pylint
+motor
+asyncpg
+fastapi
+uvicorn
