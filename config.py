@@ -1,23 +1,23 @@
-DATABASE_DRIVERS = {
-    "driver": "database.mongo", 
-    "config": {
-        "connection_uri": "mongodb cluster connection uri",
-        "database_name": "database name",
-        "collection_name": "collection name"
-    }
-}
-
 ###### Postgres Driver example
 # ==============================
 # DATABASE_DRIVERS = {
-#     "driver": "database.postgres",
+#     "driver": "database.mongo", 
 #     "config": {
-#         "connection_uri": "your connection uri",
-#         "max_size": 100, # the maximum amount of connections to create for the PostgreSQL connection pool
-#         "min_size": 75, # the minimum amount of connections to create for the PostgreSQL connection pool
-#         "table_name": "my_images"
+#         "connection_uri": "mongodb cluster connection uri",
+#         "database_name": "database name",
+#         "collection_name": "collection name"
 #     }
 # }
+
+DATABASE_DRIVERS = {
+    "driver": "database.postgres",
+    "config": {
+        "connection_uri": "your connection uri", 
+        "max_size": 100, # the maximum amount of connections to create for the PostgreSQL connection pool
+        "min_size": 75, # the minimum amount of connections to create for the PostgreSQL connection pool
+        "table_name": "major_project" # the name of the table to use for the database
+    }
+}
 
 CACHE_DRIVERS = {
     "driver": "cache.memorycache", # basic in memory cache. Cleared everytime your node shutsdown.
@@ -43,12 +43,19 @@ MAX_CACHE_SIZE = 100 # set a maximum cache size. If you want a cache with no lim
 # simply set this value to 'inf'. This setting is useful if you have a limited amount
 # of memory to work with. THIS APPLIES ONLY TO THE IN MEMORY DATABASE.
 
+ALLOWED_HOSTS = ["*"] # set a list of allowed hosts. 
+# by default, this is set to ALL hosts, as indicated through the '*'
+# this internally uses Starlette's Trusted Host middleware (starlette.middleware.trustedhost.TrustedHostMiddleware)
+
+ENFORCE_SECURE_SCHEME = False # any incoming requests must be from,
+# the https or wss protocols. Any other protcol will be redirected to their secure variant.
+
+CORS_ALLOWED_ORIGINS = ["*"] # a list of allowed origins
+# that browsers are allowed to use in a Cross-Domain context.
+# by default, this is set to all domains.
+
 SECRET_KEY = "SET_A_CUSTOM_KEY" # a secret key that will be checked in the 'Authorization' header
 # whenever a POST request is made to /delete endpoint.
-
-NOT_FOUND_STATUS_CODE = 404 # the status code to return when a file is not found.
-# this can be custsomised to your liking. A good use case to customise this is if
-# you are requesting files off your network programatically.
 
 ALLOWED_HOSTS = ["*"] # set a list of allowed hosts. 
 # by default, this is set to ALL hosts, as indicated through the '*'

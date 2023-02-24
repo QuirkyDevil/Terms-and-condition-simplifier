@@ -1,6 +1,15 @@
 black
 pylint
+aioredis
 motor
 asyncpg
 fastapi
 uvicorn
+nltk
+spacy
+pandas
+numpy
+datasets
+selenium
+webdriver-manager
+beautifulsoup4
