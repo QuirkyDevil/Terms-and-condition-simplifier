@@ -10,9 +10,10 @@ from .drivers import Driver  # import the base driver impl
 
 class PostgresDriver(Driver):
     """
-    Custom implementation of the Driver class for postgres, 
+    Custom implementation of the Driver class for postgres,
     as we just need to add methods to this file and not modify the entire codebase.
     """
+
     async def connect(self, **kwargs):
         """Connect to a psql database using the kwargs provided in config.py"""
         self.identifier = "postgres"
@@ -31,7 +32,7 @@ class PostgresDriver(Driver):
         # Creating the table in psql on connect
         # if it doesn't exist.
         async with self._connection.acquire() as conn:
-            query = (f"CREATE TABLE IF NOT EXISTS {table_name}()")
+            query = f"CREATE TABLE IF NOT EXISTS {table_name}()"
 
             await conn.execute(query)
 

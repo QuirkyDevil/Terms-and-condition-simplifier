@@ -1,12 +1,13 @@
 import zlib
 
+
 class Driver:
     def __init__(self):
-        self._connection = None # this connection instance
+        self._connection = None  # this connection instance
         # is filled in the connect method.
-        self.identifier = None # this is custom per database driver.
+        self.identifier = None  # this is custom per database driver.
         # this attribute will be None until the connect method is called.
-        self.cache_values = {} # this will help setting custom values
+        self.cache_values = {}  # this will help setting custom values
         # with custom values that are set by the set_custom_val method.
 
     async def connect(self, **kwargs):

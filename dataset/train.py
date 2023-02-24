@@ -12,30 +12,30 @@ from transformers import BertForSequenceClassification, BertConfig
 from torch.utils.data import Dataset, DataLoader
 
 
-device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
+device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
 
 xsum = load_dataset("xsum")
-cnn_dailymail = load_dataset('cnn_dailymail', '3.0.0')
-tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
+cnn_dailymail = load_dataset("cnn_dailymail", "3.0.0")
+tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
 
 xsum_articles = []
 xsum_summaries = []
 
-for example in xsum['train']:
-    xsum_articles.append(' '.join(example['document']))
-    xsum_summaries.append(example['summary'])
+for example in xsum["train"]:
+    xsum_articles.append(" ".join(example["document"]))
+    xsum_summaries.append(example["summary"])
 print("Done loading xsum training set")
 
 cnn_articles = []
 cnn_summaries = []
 
-for example in cnn_dailymail['train']:
-    cnn_articles.append(' '.join(example['highlights']) + ' ' + example['article'])
-    cnn_summaries.append(example['highlights'])
+for example in cnn_dailymail["train"]:
+    cnn_articles.append(" ".join(example["highlights"]) + " " + example["article"])
+    cnn_summaries.append(example["highlights"])
 print("Done loading cnn_dailymaill training set")
 
 # What is tokenization?
-# Tokenization is the process of splitting a text into tokens. 
+# Tokenization is the process of splitting a text into tokens.
 # A token is a sequence of characters that is treated as a single unit.
 
 # Tokenize the XSum data
@@ -56,7 +56,8 @@ class XSumDataset(Dataset):
         return {key: torch.tensor(val[idx]) for key, val in self.encodings.items()}
 
     def __len__(self):
-        return len(self.encodings['input_ids'])
+        return len(self.encodings["input_ids"])
+
 
 class CNNDataset(Dataset):
     def __init__(self, encodings):
@@ -66,8 +67,9 @@ class CNNDataset(Dataset):
         return {key: torch.tensor(val[idx]) for key, val in self.encodings.items()}
 
     def __len__(self):
-        return len(self.encodings['input_ids'])
-    
+        return len(self.encodings["input_ids"])
+
+
 xsum_dataset = XSumDataset(xsum_encodings)
 cnn_dataset = CNNDataset(cnn_encodings)
 
@@ -82,7 +84,7 @@ print("Done Data loading xsum training set")
 
 
 # Define model
-config = BertConfig.from_pretrained('bert-base-uncased', num_labels=2)
+config = BertConfig.from_pretrained("bert-base-uncased", num_labels=2)
 model = BertForSequenceClassification(config)
 
 optimizer = torch.optim.Adam(model.parameters(), lr=1e-5)
@@ -91,12 +93,14 @@ for epoch in range(10):
     running_loss = 0.0
     for batch in xsum_dataloader:
         optimizer.zero_grad()
-        input_ids = batch['input_ids'].to(device)
-        attention_mask = batch['attention_mask'].to(device)
-        labels = batch['labels'].to(device)
+        input_ids = batch["input_ids"].to(device)
+        attention_mask = batch["attention_mask"].to(device)
+        labels = batch["labels"].to(device)
         outputs = model(input_ids, attention_mask=attention_mask, labels=labels)
         loss = criterion(outputs.logits, labels)
         loss.backward()
         optimizer.step()
         running_loss += loss.item()
-    print('Epoch {} Loss: {:.4f}'.format(epoch+1, running_loss / len(xsum_dataloader)))
+    print(
+        "Epoch {} Loss: {:.4f}".format(epoch + 1, running_loss / len(xsum_dataloader))
+    )
