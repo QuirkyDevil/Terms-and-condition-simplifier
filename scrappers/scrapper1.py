@@ -1,3 +1,4 @@
+import re
 import asyncio
 import functools
 from selenium import webdriver
@@ -7,7 +8,6 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
-
 
 def executor(loop: asyncio.AbstractEventLoop = None, executor=None):
     """This is a decorator that allows you to run a function in a thread pool executor.
@@ -26,14 +26,12 @@ def executor(loop: asyncio.AbstractEventLoop = None, executor=None):
 
     return decorator
 
-
 @executor()
-def get_url(name):
+def get_url(input_user):
     """This function opens a chrome browser and searches for the
     terms and conditions of the site. It then clicks on the first link
     and waits for the page to load. It then fetches every text on the page"""
-
-    string = name.replace(" ", "+")
+    string = input_user.replace(" ", "+")
     # Using the none page load strategy to speed up the process of loading the page
     capa = DesiredCapabilities.CHROME
     capa["pageLoadStrategy"] = "none"
@@ -44,18 +42,36 @@ def get_url(name):
         service=ChromeService(chrome_driver), desired_capabilities=capa
     )
     # We are using the WebDriverWait to wait for the page to load
-    wait = WebDriverWait(driver, 20)
+    wait = WebDriverWait(driver, 5)
     driver.get("https://www.google.com/search?q=" + string + "+terms+and+conditions")
-    wait.until(
-        EC.presence_of_element_located((By.XPATH, "//h3[@class='LC20lb MBeuO DKV0Md']"))
-    )
-    # wait until the first link is loaded and then click on it
-    first_link = driver.find_elements(By.XPATH, "//h3[@class='LC20lb MBeuO DKV0Md']")
-    driver.execute_script("window.stop();")
-    # As soon as the first link is loaded, stop the page from loading and click on it
-    first_link[0].click()
-    # TODO: As soon as the page loads, extract the text needed from the page and return it
-    # Maybe stop loading javascript and css files to speed up the process
+    try:
+        first_link = wait.until(
+            EC.presence_of_element_located((By.XPATH, "//h3[@class='LC20lb MBeuO DKV0Md']"))
+        )
+        driver.execute_script("window.stop();")
+        # wait until the first link is loaded and then click on it
+        first_link.click()
+    except TimeoutError:
+        return 500
+    try:
+        wait.until(EC.presence_of_element_located((By.XPATH, "//body")))
+        driver.execute_script("window.stop();")
+        # TODO: As soon as the page loads, extract the text needed from the page and return it
+        with open('terms.html', 'w') as f:
+            f.write(driver.page_source)
+    except TimeoutError:
+        return 500
+    
+async def preprocess(text):
+    text = text.encode("ascii", "ignore").decode()  # remove non-ascii characters
+    text = re.sub('<.*?>', '', text)                # remove html tags
+    text = re.sub(r"\n", " ", text)                 # remove new line
+    text = re.sub(r"\n\n", " ", text)               # remove new lines
+    text = re.sub(r"\t", " ", text)                 # remove tabs
+    text = text.strip(" ")                          # remove spaces
+    text = re.sub(" +", " ", text).strip()          # remove extra spaces
+    
+    return text
 
 
 async def main():
