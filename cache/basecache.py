@@ -1,8 +1,9 @@
 class Cache:
     """Skeleton for cache handlers."""
+
     # a base cache handler
     def __init__(self):
-        self._connection = None # this is similar
+        self._connection = None  # this is similar
         # to the database handlers, except this can also just
         # be a regular dictionary
 
