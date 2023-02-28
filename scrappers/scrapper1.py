@@ -9,6 +9,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
+
 def executor(loop: asyncio.AbstractEventLoop = None, executor=None):
     """This is a decorator that allows you to run a function in a thread pool executor.
     This is useful for blocking functions that you don't want to block the event loop.
@@ -25,6 +26,7 @@ def executor(loop: asyncio.AbstractEventLoop = None, executor=None):
         return wrapper
 
     return decorator
+
 
 @executor()
 def get_url(input_user):
@@ -46,7 +48,9 @@ def get_url(input_user):
     driver.get("https://www.google.com/search?q=" + string + "+terms+and+conditions")
     try:
         first_link = wait.until(
-            EC.presence_of_element_located((By.XPATH, "//h3[@class='LC20lb MBeuO DKV0Md']"))
+            EC.presence_of_element_located(
+                (By.XPATH, "//h3[@class='LC20lb MBeuO DKV0Md']")
+            )
         )
         driver.execute_script("window.stop();")
         # wait until the first link is loaded and then click on it
@@ -61,15 +65,16 @@ def get_url(input_user):
         return text
     except TimeoutError:
         return 500
-    
+
+
 async def preprocess(text):
     text = text.encode("ascii", "ignore").decode()  # remove non-ascii characters
-    text = re.sub('<.*?>', '', text)                # remove html tags
-    text = re.sub(r"\n", " ", text)                 # remove new line
-    text = re.sub(r"\n\n", " ", text)               # remove new lines
-    text = re.sub(r"\t", " ", text)                 # remove tabs
-    text = text.strip(" ")                          # remove spaces
-    text = re.sub(" +", " ", text).strip()          # remove extra spaces
+    text = re.sub("<.*?>", "", text)  # remove html tags
+    text = re.sub(r"\n", " ", text)  # remove new line
+    text = re.sub(r"\n\n", " ", text)  # remove new lines
+    text = re.sub(r"\t", " ", text)  # remove tabs
+    text = text.strip(" ")  # remove spaces
+    text = re.sub(" +", " ", text).strip()  # remove extra spaces
     return text
 
 
@@ -80,7 +85,7 @@ async def main():
         print("The site you are looking for is not found")
     else:
         output = await preprocess(output)
-        
+
 
 async def scrape(input_user):
     tnc = await get_url(input_user)
@@ -89,7 +94,7 @@ async def scrape(input_user):
     else:
         tnc = await preprocess(tnc)
         return tnc
-    
+
 
 if __name__ == "__main__":
     asyncio.run(main())

@@ -55,7 +55,9 @@ def final_summary(input_text):
                     halved_inputs = tokenizer(halved_sentence, return_tensors="pt")
                     # halved_inputs = halved_inputs.to(DEVICE)
 
-                    halved_summary_ids = model.generate(halved_inputs["input_ids"], max_length=128)
+                    halved_summary_ids = model.generate(
+                        halved_inputs["input_ids"], max_length=128
+                    )
                     j += sent_remaining
                     length_sent -= sent_remaining
 
@@ -69,7 +71,7 @@ def final_summary(input_text):
                         output.append(halved_summary)
 
             else:
-                summary_ids = model.generate(inputs["input_ids"],max_length=128)
+                summary_ids = model.generate(inputs["input_ids"], max_length=128)
                 if len(summary_ids[0]) < original_input_length:
                     summary = tokenizer.batch_decode(
                         summary_ids,

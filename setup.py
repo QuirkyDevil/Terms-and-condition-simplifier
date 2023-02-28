@@ -13,10 +13,10 @@ spacy.cli.download("en_core_web_sm")
 
 # install requirements using pip
 requirements = []
-with open('requirements.txt') as f:
+with open("requirements.txt") as f:
     requirements = f.read().splitlines()
     for package in requirements:
         subprocess.check_call([sys.executable, "-m", "pip", "install", package])
 
-# use subprocess to install pytorch using conda 
+# use subprocess to install pytorch using conda
 subprocess.check_call("conda install pytorch torchvision torchaudio -c pytorch")
