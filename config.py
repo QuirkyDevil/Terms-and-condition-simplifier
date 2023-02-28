@@ -63,3 +63,6 @@ ALLOWED_HOSTS = ["*"] # set a list of allowed hosts.
 
 REQUIRE_AUTH_FOR_DELETE = True # whether authorization is needed via the secret key
 # to delete the file
+
+LOG_FILE = "logs.log" # the name of the log file to use for logging requests. 
+# this is set to 'logs.log' by default.

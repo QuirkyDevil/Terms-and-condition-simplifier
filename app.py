@@ -1,13 +1,11 @@
+import logging
 import importlib
+from typing import Tuple
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import JSONResponse
-from fastapi.middleware.httpsredirect import HTTPSRedirectMiddleware
-
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
-
-
-from typing import Tuple
+from fastapi.middleware.httpsredirect import HTTPSRedirectMiddleware
 
 
 import config as settings
@@ -16,6 +14,13 @@ import config as settings
 app = FastAPI()
 app.add_middleware(CORSMiddleware, allow_origins=settings.CORS_ALLOWED_ORIGINS)
 app.add_middleware(TrustedHostMiddleware, allowed_hosts=settings.ALLOWED_HOSTS)
+
+# set up logging
+logger = logging.getLogger("uvicorn")
+formatter = logging.Formatter("%(asctime)s | %(name)s | %(levelname)s: | %(message)s")
+file = logging.FileHandler(settings.LOG_FILE, mode="w", encoding="utf-8")
+file.setFormatter(formatter)
+logger.addHandler(file)
 
 app.cache = None
 app.DB = None

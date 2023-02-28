@@ -8,12 +8,12 @@ tokenizer = BartTokenizer.from_pretrained("sshleifer/distilbart-cnn-12-6")
 nlp = spacy.load("en_core_web_sm")
 
 
-def final_summary(file):
+def final_summary(input_text):
     # reading in the text and tokenizing it into sentence
-    text = file
-    bullet_points = 20
+    text = input_text
+    bullet_points = 10
 
-    while bullet_points >= 20:
+    while bullet_points >= 10:
         # splitting the text into sentences
         chunks = []
         sentences = nlp(text)
@@ -31,12 +31,11 @@ def final_summary(file):
             sentence = "".join(chunks[i : i + next_chunk_size])
             i += next_chunk_size
             sentences_remaining -= next_chunk_size
-
             inputs = tokenizer(sentence, return_tensors="pt", padding="longest")
             # inputs = inputs.to(DEVICE)
             original_input_length = len(inputs["input_ids"][0])
 
-            # checking if the length of the input batch is less than 150
+            # checking if the length of the input batch is less than 100
             if original_input_length < 100:
                 split_sentences = nlp(sentence)
                 for split_sentence in split_sentences.sents:
@@ -55,7 +54,8 @@ def final_summary(file):
                     halved_sentence = "".join(sent[j : j + sent_remaining])
                     halved_inputs = tokenizer(halved_sentence, return_tensors="pt")
                     # halved_inputs = halved_inputs.to(DEVICE)
-                    halved_summary_ids = model.generate(halved_inputs["input_ids"])
+
+                    halved_summary_ids = model.generate(halved_inputs["input_ids"], max_length=128)
                     j += sent_remaining
                     length_sent -= sent_remaining
 
@@ -69,8 +69,7 @@ def final_summary(file):
                         output.append(halved_summary)
 
             else:
-                summary_ids = model.generate(inputs["input_ids"])
-
+                summary_ids = model.generate(inputs["input_ids"],max_length=128)
                 if len(summary_ids[0]) < original_input_length:
                     summary = tokenizer.batch_decode(
                         summary_ids,
@@ -92,7 +91,6 @@ def final_summary(file):
 
     # final sentences are incoherent, so we will join them by bullet separator
     summary_bullet = "\n".join(final_output)
-
     return summary_bullet
 
 

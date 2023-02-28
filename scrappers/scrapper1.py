@@ -57,8 +57,8 @@ def get_url(input_user):
         wait.until(EC.presence_of_element_located((By.XPATH, "//body")))
         driver.execute_script("window.stop();")
         # TODO: As soon as the page loads, extract the text needed from the page and return it
-        with open('terms.html', 'w') as f:
-            f.write(driver.page_source)
+        text = driver.execute_script("return document.body.innerText")
+        return text
     except TimeoutError:
         return 500
     
@@ -70,14 +70,26 @@ async def preprocess(text):
     text = re.sub(r"\t", " ", text)                 # remove tabs
     text = text.strip(" ")                          # remove spaces
     text = re.sub(" +", " ", text).strip()          # remove extra spaces
-    
     return text
 
 
 async def main():
     name = input("Enter the name of the site u want terms and conditions for: ")
-    await get_url(name)
+    output = await get_url(name)
+    if output == 500:
+        print("The site you are looking for is not found")
+    else:
+        output = await preprocess(output)
+        
 
+async def scrape(input_user):
+    tnc = await get_url(input_user)
+    if tnc == 500:
+        return 500
+    else:
+        tnc = await preprocess(tnc)
+        return tnc
+    
 
 if __name__ == "__main__":
     asyncio.run(main())
