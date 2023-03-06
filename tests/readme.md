@@ -1,0 +1,1 @@
+### Test Cases for terms and conditions simplifier

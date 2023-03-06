@@ -1,11 +1,9 @@
 import importlib
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import JSONResponse
-from fastapi.middleware.httpsredirect import HTTPSRedirectMiddleware
-
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
-
+from fastapi.middleware.httpsredirect import HTTPSRedirectMiddleware
 
 from typing import Tuple
 

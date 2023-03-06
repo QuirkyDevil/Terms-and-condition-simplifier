@@ -38,14 +38,6 @@ class PostgresDriver(Driver):
 
         return self._connection
 
-    async def insert(self):
-        """Need to implement this for different tables which are yet to be decided"""
-        return
-
-    async def fetch(self):
-        """Need to implement this for different tables which are yet to be decided"""
-        return
-
     async def delete_row(self, name: str) -> bool:
         """Delete a row from the table"""
         table_name = "test"
