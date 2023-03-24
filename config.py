@@ -12,7 +12,7 @@
 DATABASE_DRIVERS = {
     "driver": "database.postgres",
     "config": {
-        "connection_uri": "your connection uri",
+        "connection_uri": "postgresql://localhost/alex_testing?user=alex&password=euu",
         "max_size": 100,  # the maximum amount of connections to create for the PostgreSQL connection pool
         "min_size": 75,  # the minimum amount of connections to create for the PostgreSQL connection pool
         "table_name": "major_project",  # the name of the table to use for the database
@@ -63,3 +63,6 @@ ALLOWED_HOSTS = ["*"]  # set a list of allowed hosts.
 
 REQUIRE_AUTH_FOR_DELETE = True  # whether authorization is needed via the secret key
 # to delete the file
+
+LOG_FILE = "logs.log"  # the name of the log file to use for logging requests.
+# this is set to 'logs.log' by default.

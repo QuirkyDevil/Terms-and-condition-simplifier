@@ -28,11 +28,36 @@ class MongoDriver(Driver):
         self._parent_client = client
         return self._connection
 
-    async def insert(self):
-        return
+    async def add(self, name: str, summary: str, last_updated: str):
+        """Add a row to the table"""
+        query = {"_id": name, "summary": summary, "last_updated": last_updated}
+        try:
+            await self._connection.insert_one(query)
+        except Exception:
+            return False
+        else:
+            return True
 
-    async def fetch(self):
-        return
+    async def search(self, name: str) -> Mapping[str, Any] | None:
+        """Search for a row in the table"""
+        query = {"_id": name}
+        try:
+            values = await self._connection.find_one(query)
+        except Exception:
+            return None
+        else:
+            return values
+
+    async def update(self, name: str, summary: str, last_updated: str) -> bool:
+        """Update a row in the table"""
+        query = {"_id": name}
+        new_values = {"$set": {"summary": summary, "last_updated": last_updated}}
+        try:
+            await self._connection.update_one(query, new_values)
+        except Exception:
+            return False
+        else:
+            return True
 
     async def delete(self, name: str) -> bool:
         # Returns whether the delete succeeded or failed
@@ -44,7 +69,7 @@ class MongoDriver(Driver):
         else:
             return True
 
-    async def fetch_all(self) -> Tuple[List[Mapping[str, Any]], str]:
+    async def list_all(self) -> Tuple[List[Mapping[str, Any]], str]:
         documents = await self._connection.find({}).to_list(
             length=99999999999999999999
         )  # big number

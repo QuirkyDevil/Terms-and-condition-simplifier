@@ -13,7 +13,19 @@ class Driver:
     async def connect(self, **kwargs):
         raise NotImplementedError
 
-    async def insert(self, *args, **kwargs):
+    async def add(self, *args, **kwargs):
+        raise NotImplementedError
+
+    async def search(self, *args, **kwargs):
+        raise NotImplementedError
+
+    async def update(self, *args, **kwargs):
+        raise NotImplementedError
+
+    async def delete(self, *args, **kwargs):
+        raise NotImplementedError
+
+    async def list_all(self, *args, **kwargs):
         raise NotImplementedError
 
     async def cleanup(self):
