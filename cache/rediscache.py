@@ -45,6 +45,16 @@ class RedisCache(Cache):
         future_task = self._connection.set(key, summary)
         await asyncio.gather(future_task)
 
+    async def purge(self):
+        """Purge the entire cache."""
+        future_task = self._connection.flushall()
+        try:
+            await asyncio.gather(future_task)
+        except Exception:
+            return False
+        else:
+            return True
+
     async def cleanup(self):
         return await self._connection.close()
 
