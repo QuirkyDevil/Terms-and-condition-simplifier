@@ -60,7 +60,9 @@ class PostgresDriver(Driver):
 
     async def update(self, company: str, summary: str, last_updated: str):
         """Update a row in the table"""
-        query = f"UPDATE {self.table} SET summary = $1, last_updated = $2 WHERE name = $3"
+        query = (
+            f"UPDATE {self.table} SET summary = $1, last_updated = $2 WHERE name = $3"
+        )
         try:
             async with self._connection.acquire() as conn:
                 await conn.execute(query, summary, last_updated, company)

@@ -13,6 +13,7 @@ nlp = spacy.load("en_core_web_sm")
 t4 = time.time() - t3
 print(f"Time taken to load the model: {t4}")
 
+
 @ticktock_async
 async def final_summary(input_text, points: int = 20):
     text = input_text
@@ -60,7 +61,9 @@ async def final_summary(input_text, points: int = 20):
                     halved_inputs = tokenizer(halved_sentence, return_tensors="pt")
                     # halved_inputs = halved_inputs.to(DEVICE)
 
-                    halved_summary_ids = model.generate(halved_inputs["input_ids"], max_length=1024)
+                    halved_summary_ids = model.generate(
+                        halved_inputs["input_ids"], max_length=1024
+                    )
                     j += sent_remaining
                     length_sent -= sent_remaining
 

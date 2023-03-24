@@ -11,6 +11,7 @@ class MongoDriver(Driver):
     Custom implementation of the Driver class for mongoDB,
     as we just need to add methods to this file and not modify the entire codebase.
     """
+
     async def connect(self, **kwargs):
         self.identifier = "mongo"
 
@@ -57,7 +58,7 @@ class MongoDriver(Driver):
             return False
         else:
             return True
-        
+
     async def delete(self, name: str) -> bool:
         # Returns whether the delete succeeded or failed
         query = {"_id": name}

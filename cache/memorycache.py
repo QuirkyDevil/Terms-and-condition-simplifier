@@ -5,6 +5,7 @@ from .basecache import Cache
 
 class InMemoryCache(Cache):
     """cache summary of terms and condition in the memory and not query the database every time"""
+
     async def connect(self, **kwargs):
         # to keep it consistent we will indeed have an async function
         # to just register a dict
@@ -19,7 +20,7 @@ class InMemoryCache(Cache):
         if None in data:
             return None
         return data
-    
+
     async def update(self, key: str, summary: str):
         self._connection[key] = summary
 
@@ -30,10 +31,9 @@ class InMemoryCache(Cache):
         except KeyError:
             return False  # failed
         return True  # success
-    
+
     async def purge(self):
         self._connection.clear()
-
 
     async def set(self, key: str, summary: str):
         self._connection[key] = summary

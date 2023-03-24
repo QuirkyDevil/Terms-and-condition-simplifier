@@ -11,10 +11,7 @@ from scrappers.selenium_based import scrape
 import config as settings
 
 
-app = FastAPI(
-    title="Terms and Condition Simplifier", 
-    version="0.1.0 Alpha"
-    )
+app = FastAPI(title="Terms and Condition Simplifier", version="0.1.0 Alpha")
 app.add_middleware(CORSMiddleware, allow_origins=settings.CORS_ALLOWED_ORIGINS)
 app.add_middleware(TrustedHostMiddleware, allowed_hosts=settings.ALLOWED_HOSTS)
 
@@ -45,8 +42,10 @@ def _check_cache_driver() -> Tuple[type, str]:
     _type = package._DRIVER_TYPE
     return (driver, _type)
 
+
 async def the_process():
     ...
+
 
 # on startup
 @app.on_event("startup")
