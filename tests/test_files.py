@@ -3,6 +3,7 @@
 import os
 import shutil
 
+
 def test_empty_files():
     for root, _, files in os.walk("backend"):
         for file in files:
@@ -10,9 +11,9 @@ def test_empty_files():
                 print("Empty file: " + os.path.join(root, file))
                 os.remove(os.path.join(root, file))
 
+
 def test_empty_folders():
     for root, dirs, _ in os.walk("backend"):
         for dir in dirs:
             if not os.listdir(os.path.join(root, dir)):
                 shutil.rmtree(os.path.join(root, dir))
-

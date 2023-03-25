@@ -54,5 +54,6 @@ def scrap_text(input_user):
         driver.quit()
         return 500
 
+
 if __name__ == "__main__":
     print(scrap_text("facebook"))

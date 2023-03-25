@@ -14,7 +14,7 @@ async def preprocess(text):
     return text
 
 
-async def scrape_and_summarize(analyzer,  url: str, points: int = 20):
+async def scrape_and_summarize(analyzer, url: str, points: int = 20):
     """Scrape the terms and conditions and summarize them"""
     text = await scrap_text(url)
     text = await preprocess(text)
@@ -28,4 +28,3 @@ async def summerize_without_classify(url: str, points: int = 20):
     text = await scrap_text(url)
     summary = await final_summary(text, points)
     return summary
-

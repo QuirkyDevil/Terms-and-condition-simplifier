@@ -15,6 +15,7 @@ nlp = spacy.load("en_core_web_sm")
 t2 = time.time()
 print(f"Time taken to load the models: {t2 - t1}")
 
+
 @ticktock_async
 async def final_summary(input_text, points: int = 20):
     text = input_text

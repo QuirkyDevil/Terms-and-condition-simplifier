@@ -30,6 +30,7 @@ try:
 except ImportError:
     subprocess.check_call([sys.executable, "-m", "pip", "install", "transformers"])
     from transformers import BartTokenizer, BartForConditionalGeneration
+
     BartForConditionalGeneration.from_pretrained("sshleifer/distilbart-cnn-12-6")
     BartTokenizer.from_pretrained("sshleifer/distilbart-cnn-12-6")
 
