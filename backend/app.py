@@ -78,7 +78,7 @@ async def shutdown_event():
     try:
         await app.DB.cleanup()
         await app.cache.cleanup()
-    except Exception as e:
+    except Exception:
         # disregard any errors that may occur during shutdown.
         pass
 
