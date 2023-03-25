@@ -2,8 +2,6 @@ import math
 import time
 import spacy
 from nltk.tokenize import sent_tokenize
-
-import spacy
 from transformers import BartTokenizer, BartForConditionalGeneration
 
 from backend.decorators.ticktock import ticktock_async
@@ -40,7 +38,6 @@ async def final_summary(input_text, points: int = 20):
             i += next_chunk_size
             sentences_remaining -= next_chunk_size
             inputs = tokenizer(sentence, return_tensors="pt", padding="longest")
-            # inputs = inputs.to(DEVICE)
             original_input_length = len(inputs["input_ids"][0])
 
             # checking if the length of the input batch is less than 100
@@ -61,7 +58,6 @@ async def final_summary(input_text, points: int = 20):
                 while length_sent > 0:
                     halved_sentence = "".join(sent[j : j + sent_remaining])
                     halved_inputs = tokenizer(halved_sentence, return_tensors="pt")
-                    # halved_inputs = halved_inputs.to(DEVICE)
 
                     halved_summary_ids = model.generate(
                         halved_inputs["input_ids"], max_length=1024
