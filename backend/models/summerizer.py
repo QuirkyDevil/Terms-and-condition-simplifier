@@ -1,18 +1,19 @@
 import math
-import spacy
 import time
+import spacy
 from nltk.tokenize import sent_tokenize
+
+import spacy
 from transformers import BartTokenizer, BartForConditionalGeneration
 
-from decorators.ticktock import ticktock_async
+from backend.decorators.ticktock import ticktock_async
 
-t3 = time.time()
+t1 = time.time()
 model = BartForConditionalGeneration.from_pretrained("sshleifer/distilbart-cnn-12-6")
 tokenizer = BartTokenizer.from_pretrained("sshleifer/distilbart-cnn-12-6")
 nlp = spacy.load("en_core_web_sm")
-t4 = time.time() - t3
-print(f"Time taken to load the model: {t4}")
-
+t2 = time.time()
+print(f"Time taken to load the models: {t2 - t1}")
 
 @ticktock_async
 async def final_summary(input_text, points: int = 20):
@@ -100,9 +101,3 @@ async def final_summary(input_text, points: int = 20):
     # final sentences are incoherent, so we will join them by bullet separator
     summary_bullet = "\n".join(final_output)
     return summary_bullet
-
-
-if __name__ == "__main__":
-    with open("tnc.txt", "r") as f:
-        text = f.read()
-    print(final_summary(text))

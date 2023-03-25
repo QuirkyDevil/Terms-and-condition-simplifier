@@ -1,7 +1,7 @@
 ###### Postgres Driver example
 # ==============================
 # DATABASE_DRIVERS = {
-#     "driver": "database.mongo",
+#     "driver": "backend.database.mongo",
 #     "config": {
 #         "connection_uri": "mongodb cluster connection uri",
 #         "database_name": "database name",
@@ -10,7 +10,7 @@
 # }
 
 DATABASE_DRIVERS = {
-    "driver": "database.postgres",
+    "driver": "backend.database.postgres",
     "config": {
         "connection_uri": "postgresql://localhost/alex_testing?user=alex&password=euu",
         "max_size": 100,  # the maximum amount of connections to create for the PostgreSQL connection pool
@@ -20,7 +20,7 @@ DATABASE_DRIVERS = {
 }
 
 CACHE_DRIVERS = {
-    "driver": "cache.memorycache",  # basic in memory cache. Cleared everytime your node shutsdown.
+    "driver": "backend.cache.memorycache",  # basic in memory cache. Cleared everytime your node shutsdown.
     "config": {}  # leave this empty as memory caches have no config
     # apart from the MAX_CACHE_SIZE which is inferred from the setting automatically.
 }
@@ -28,7 +28,7 @@ CACHE_DRIVERS = {
 ##### Redis Cache Driver example
 # ==============================
 # CACHE_DRIVERS = {
-#     "driver": "cache.rediscache",
+#     "driver": "backend.cache.rediscache",
 #     "config": {
 #         "connection_uri": "redis connection uri",
 #         "username": "username for auth",

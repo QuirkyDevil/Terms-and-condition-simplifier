@@ -1,0 +1,14 @@
+[Unit]
+Description=terms and condition API
+After=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/root/myfolders/backend/
+ExecStart=/root/myfolders/bin/python3 -m uvicorn backend.app:app --port 2007 --workers 5
+User=root
+Restart=always
+TimeoutStopSec=10
+
+[Install]
+WantedBy=multi-user.target

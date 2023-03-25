@@ -38,6 +38,7 @@ class PostgresDriver(Driver):
 
     async def add(self, company: str, summary: str, last_updated: str):
         """Add a row to the table"""
+        print("Adding to database")
         query = f"INSERT INTO {self.table} (name, summary, last_updated) VALUES ($1, $2, $3)"
         try:
             async with self._connection.acquire() as conn:
