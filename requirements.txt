@@ -15,3 +15,7 @@ webdriver-manager
 beautifulsoup4
 datasets
 vaderSentiment
+sphinx
+furo
+myst_parser
+orjson
