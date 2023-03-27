@@ -1,6 +1,3 @@
-import re
-import asyncio
-import functools
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -9,7 +6,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 
-from decorators.asyc_executor import executor
+from backend.decorators.asyc_executor import executor
 
 
 @executor()
@@ -55,27 +52,5 @@ def scrap_text(input_user):
         return 500
 
 
-async def preprocess(text):
-    """This function preprocesses the text by removing html tags, new lines, tabs and extra spaces"""
-    text = text.encode("ascii", "ignore").decode()  # remove non-ascii characters
-    text = re.sub(r"<.*?>", "", text)  # remove html tags
-    text = re.sub(r"[\n\t]+", " ", text)  # remove new lines and tabs
-    text = re.sub(r" +", " ", text).strip()  # remove extra spaces
-    return text
-
-
-async def scrape(input_user):
-    tnc = await scrap_text(input_user)
-    if tnc == 500:
-        return 500
-    else:
-        tnc = await preprocess(tnc)
-        return tnc
-
-
 if __name__ == "__main__":
-    loop = asyncio.get_event_loop()
-    # store tnc in a file
-    with open("tnc.txt", "w") as f:
-        f.write(loop.run_until_complete(scrape("facebook")))
-    loop.close()
+    print(scrap_text("facebook"))

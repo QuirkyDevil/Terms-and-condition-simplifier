@@ -38,6 +38,9 @@ class InMemoryCache(Cache):
     async def set(self, key: str, summary: str):
         self._connection[key] = summary
 
+    async def list_all(self):
+        return self._connection
+
     async def cleanup(self):
         # believe it or not
         # there is a cleanup operation for a dictionary

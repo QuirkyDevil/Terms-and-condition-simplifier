@@ -7,14 +7,18 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.middleware.httpsredirect import HTTPSRedirectMiddleware
 
-from scrappers.selenium_based import scrape
-import config as settings
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+
+
+from backend.functions.main import scrape_and_summarize
+import backend.config as settings
 
 
 app = FastAPI(title="Terms and Condition Simplifier", version="0.1.0 Alpha")
 app.add_middleware(CORSMiddleware, allow_origins=settings.CORS_ALLOWED_ORIGINS)
 app.add_middleware(TrustedHostMiddleware, allowed_hosts=settings.ALLOWED_HOSTS)
 
+analyzer = SentimentIntensityAnalyzer()
 
 app.cache = None
 app.DB = None
@@ -74,7 +78,7 @@ async def shutdown_event():
     try:
         await app.DB.cleanup()
         await app.cache.cleanup()
-    except Exception as e:
+    except Exception:
         # disregard any errors that may occur during shutdown.
         pass
 
@@ -104,11 +108,11 @@ async def get_summary(company: str) -> JSONResponse:
             await app.cache.set(company, check_db[1])
             return JSONResponse(content=check_db, status_code=200)
         else:
-            result = await scrape(company)
+            result = await scrape_and_summarize(analyzer, company)
             if result:
                 await app.DB.add(company, result, datetime.datetime.now())
                 await app.cache.set(company, result)
-                return JSONResponse(content=result, status_code=200)
+                return {"status": 200, "data": result}
             raise HTTPException(status_code=404, detail="Company Not Found!")
     return JSONResponse(content=check_cache, status_code=200)
 
@@ -124,21 +128,20 @@ async def search_summary(company: str) -> JSONResponse:
 
 @app.get("/list_all", tags=["general"])
 async def list_companies() -> JSONResponse:
-    result = await app.DB.list_all()
+    result = await app.cache.list_all()
     if result:
-        return JSONResponse(content=result, status_code=200)
+        return {"status": "success", "data": result}
     raise HTTPException(status_code=404, detail="No items found")
 
 
 @app.get("/add_company", tags=["general"])
-async def add(company: str, secret_key: str) -> JSONResponse:
+async def add(company: str) -> JSONResponse:
     """Add."""
-    if secret_key != settings.SECRET_KEY:
-        return JSONResponse(content={"error": "unauthorized"}, status_code=401)
-    result = await scrape(company)
+    result = await scrape_and_summarize(analyzer, company)
     if result:
         await app.DB.add(company, result, datetime.datetime.now())
-        await app.cache.set(company, result)
+        data = (result, datetime.datetime.now())
+        await app.cache.set(company, data)
         return JSONResponse(content=result, status_code=200)
     raise HTTPException(status_code=404, detail="Company Not Found!")
 
@@ -155,7 +158,7 @@ async def purge_cache(secret_key: str) -> JSONResponse:
 async def update(company: str, secret_key: str) -> JSONResponse:
     if secret_key != settings.SECRET_KEY:
         return JSONResponse(content={"error": "unauthorized"}, status_code=401)
-    summary = await scrape(company)
+    summary = await scrape_and_summarize(analyzer, company)
     db_updated = await app.DB.update(company, summary, datetime.datetime.now())
     cache_updated = await app.cache.update(company, summary)
     status_codes = 204

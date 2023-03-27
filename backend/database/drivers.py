@@ -35,6 +35,7 @@ class Driver:
         self.cache_values[key] = value
         return {key: value}
 
-    def decompress(self, _bytes: bytes) -> bytes:
+    @staticmethod
+    def decompress(_bytes: bytes) -> bytes:
         decompressed = zlib.decompress(_bytes)
         return decompressed
