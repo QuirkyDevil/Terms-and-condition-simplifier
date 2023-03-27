@@ -39,7 +39,7 @@ class PostgresDriver(Driver):
     async def add(self, company: str, summary: str, last_updated: str):
         """Add a row to the table"""
         print("Adding to database")
-        query = f"INSERT INTO major_project (name, summary, last_updated) VALUES ($1, $2, $3)"
+        query = "INSERT INTO major_project (name, summary, last_updated) VALUES ($1, $2, $3)"
         try:
             async with self._connection.acquire() as conn:
                 await conn.execute(query, company, summary, last_updated)
@@ -50,7 +50,7 @@ class PostgresDriver(Driver):
 
     async def search(self, company: str):
         """Search for a row in the table"""
-        query = f"SELECT * FROM major_project WHERE name = $1"
+        query = "SELECT * FROM major_project WHERE name = $1"
         try:
             async with self._connection.acquire() as conn:
                 row = await conn.fetchrow(query, company)
@@ -62,7 +62,7 @@ class PostgresDriver(Driver):
     async def update(self, company: str, summary: str, last_updated: str):
         """Update a row in the table"""
         query = (
-            f"UPDATE major_project SET summary = $1, last_updated = $2 WHERE name = $3"
+            "UPDATE major_project SET summary = $1, last_updated = $2 WHERE name = $3"
         )
         try:
             async with self._connection.acquire() as conn:
@@ -76,7 +76,7 @@ class PostgresDriver(Driver):
         """Delete a row from the table"""
         try:
             async with self._connection.acquire() as conn:
-                query = f"DELETE FROM major_project " "WHERE name = $1"
+                query = "DELETE FROM major_project " "WHERE name = $1"
                 await conn.execute(query, name)
         except PostgresError:
             return False
@@ -87,7 +87,7 @@ class PostgresDriver(Driver):
         """Fetch all rows from the table"""
         try:
             async with self._connection.acquire() as conn:
-                query = f"SELECT * FROM major_project"
+                query = "SELECT * FROM major_project"
                 rows = await conn.fetch(query)
         except PostgresError:
             return []
