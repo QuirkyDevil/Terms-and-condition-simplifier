@@ -1,13 +1,14 @@
 {
-  "name": "Terms and Condition Simplifier",
-  "description": "Simplifies the terms and conditions of websites to make them easier to read.",
-  "version": "1.0",
-  "manifest_version": 2,
-  "permissions": ["activeTab"],
-  "content_scripts": [
-    {
-      "matches": ["http://*/*", "https://*/*"],
-      "js": ["content.js"]
-    }
-  ]
+  "name": "Terms and conditions simplifier.",
+  "version": "0.0.1",
+  "manifest_version": 3,
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": "icon.png"
+  },
+
+  "icons": {
+    "128": "icon.png"
+  },
+  "permissions": ["activeTab", "tabs", "scripting"]
 }
