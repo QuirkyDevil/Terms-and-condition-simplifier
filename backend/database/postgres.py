@@ -6,9 +6,10 @@ from .drivers import Driver  # import the base driver impl
 
 
 class PostgresDriver(Driver):
-    """
-    Custom implementation of the Driver class for postgres,
-    as we just need to add methods to this file and not modify the entire codebase.
+    """Asynchronous PostgreSQL driver implementation. This class inherits from the
+    Driver class. This class contains the methods that are specific to
+    PostgreSQL. This class also contains the connect method that will
+    connect to the database and return the connection instance.
     """
 
     async def connect(self, **kwargs):
@@ -37,7 +38,7 @@ class PostgresDriver(Driver):
         return self._connection
 
     async def add(self, company: str, summary: str, last_updated: str):
-        """Add a row to the table"""
+        """Add a row to the table and return whether the insert was done"""
         print("Adding to database")
         query = "INSERT INTO major_project (name, summary, last_updated) VALUES ($1, $2, $3)"
         try:
@@ -49,7 +50,7 @@ class PostgresDriver(Driver):
             return True
 
     async def search(self, company: str):
-        """Search for a row in the table"""
+        """Search for a row in the table and return the row"""
         query = "SELECT * FROM major_project WHERE name = $1"
         try:
             async with self._connection.acquire() as conn:
@@ -60,7 +61,7 @@ class PostgresDriver(Driver):
             return row
 
     async def update(self, company: str, summary: str, last_updated: str):
-        """Update a row in the table"""
+        """Update a row in the table and return whether the update was done"""
         query = (
             "UPDATE major_project SET summary = $1, last_updated = $2 WHERE name = $3"
         )
@@ -73,7 +74,7 @@ class PostgresDriver(Driver):
             return True
 
     async def delete(self, name: str) -> bool:
-        """Delete a row from the table"""
+        """Delete a row from the table and return whether the delete was done"""
         try:
             async with self._connection.acquire() as conn:
                 query = "DELETE FROM major_project " "WHERE name = $1"
@@ -84,7 +85,7 @@ class PostgresDriver(Driver):
             return True
 
     async def list_all(self):
-        """Fetch all rows from the table"""
+        """Fetch all rows from the table and return them"""
         try:
             async with self._connection.acquire() as conn:
                 query = "SELECT * FROM major_project"
@@ -95,7 +96,7 @@ class PostgresDriver(Driver):
             return rows
 
     async def cleanup(self) -> None:
-        """called when shutting down the server"""
+        """called when shutting down the server to close the connection"""
         return await self._connection.close()
 
 

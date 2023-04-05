@@ -9,7 +9,6 @@ sys.path.insert(0, os.path.abspath(".."))
 
 project = 'Terms and Condition Simplifier'
 copyright = '2023, Soham'
-author = 'Soham, Shreyas, Mrinmayee, Aditya'
 
 release = '1.0.0'
 
@@ -46,6 +45,8 @@ html_theme = "furo"
 html_static_path = ['_static']
 
 html_title = "Terms and Condition Simplifier"
+
+language = "en"
 
 html_theme_options: Dict[str, Any] = {
     "footer_icons": [
@@ -92,6 +93,7 @@ def linkcode_resolve(domain, info):
             # e.g. object is a typing.Union
             return None
         file = os.path.relpath(file, os.path.abspath(".."))
+        file = file.replace("Terms-and-condition-simplifier/", "")
         start, end = lines[1], lines[1] + len(lines[0]) - 1
 
         return f"https://github.com/QuirkyDevil/Terms-and-condition-simplifier/blob/main/{file}#L{start}-L{end}"

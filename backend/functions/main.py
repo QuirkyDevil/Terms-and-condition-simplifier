@@ -3,19 +3,18 @@ import re
 from backend.scrappers.selenium_based import scrap_text
 from backend.models.sentence_classifier import classify_sentiment
 from backend.models.summerizer import final_summary
-
-
-async def preprocess(text):
-    """This function preprocesses the text by removing html tags, new lines, tabs and extra spaces"""
-    text = text.encode("ascii", "ignore").decode()  # remove non-ascii characters
-    text = re.sub(r"<.*?>", "", text)  # remove html tags
-    text = re.sub(r"[\n\t]+", " ", text)  # remove new lines and tabs
-    text = re.sub(r" +", " ", text).strip()  # remove extra spaces
-    return text
+from backend.functions.helper import preprocess
 
 
 async def scrape_and_summarize(analyzer, url: str, points: int = 20):
-    """Scrape the terms and conditions and summarize them"""
+    """This is the main function that will scrape the terms and conditions
+    from the specified url and summarize them. First it will scrape the
+    terms and conditions, then it will preprocess the text, then it will
+    classify the sentences as positive or negative, returning only the
+    negative sentences, and then it will summarize the negative sentences.
+    It takes in the analyzer object, the url, and the number of maximum
+    sentences to be in the summary. Default is 20.
+    """
     text = await scrap_text(url)
     text = await preprocess(text)
     negative_text = await classify_sentiment(text, analyzer=analyzer)
@@ -24,7 +23,12 @@ async def scrape_and_summarize(analyzer, url: str, points: int = 20):
 
 
 async def summerize_without_classify(url: str, points: int = 20):
-    """Scrape the terms and conditions and summarize them"""
+    """This is similar function to the scrape_and_summarize function,
+    except this will not classify the sentences as positive or negative.
+    This is useful if you want to summarize the entire text, not just
+    the negative sentences. The maximum number of sentences in the summary
+    is 20 by default. You can change this by passing in the points argument.
+    """
     text = await scrap_text(url)
     summary = await final_summary(text, points)
     return summary

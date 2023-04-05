@@ -4,6 +4,12 @@ negative_list = []
 
 
 async def classify_sentiment(para, analyzer) -> list:
+    """This function will classify the sentences as positive or negative.
+    It will return a list of negative sentences. It takes in the paragraph
+    and the analyzer object. The analyzer object is the object that will
+    classify the sentences as positive or negative. It is created in the
+    backend/functions/main.py file.
+    """
     paragraph = re.split(r' *[\.\?!][\'"\)\]]* *', para)
     for text in paragraph:
         scores = analyzer.polarity_scores(text)

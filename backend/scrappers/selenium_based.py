@@ -6,14 +6,17 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 
-from backend.decorators.asyc_executor import executor
+from backend.decorators.basic import executor
 
 
 @executor()
 def scrap_text(input_user):
     """This function opens a chrome browser and searches for the
     terms and conditions of the site. It then clicks on the first link
-    and waits for the page to load. It then fetches every text on the page"""
+    and waits for the page to load. It then fetches every text on the
+    page and returns it. This function is asynchronous and can be used
+    with the async/await syntax. 
+    """
     string = input_user.replace(" ", "+")
 
     options = ChromeOptions()
