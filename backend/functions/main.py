@@ -1,4 +1,3 @@
-
 from backend.scrappers.selenium_based import scrap_text
 from backend.models.sentence_classifier import classify_sentiment
 from backend.models.summerizer import final_summary
