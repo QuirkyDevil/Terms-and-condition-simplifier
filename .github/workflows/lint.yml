@@ -1,0 +1,19 @@
+name: Lint
+on:
+  push:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  
+jobs:
+  check:
+      runs-on: ubuntu-latest
+      strategy:
+        fail-fast: false
+        matrix:
+          python-version: [ '3.8', '3.x' ]
+      name: check ${{ matrix.python-version }}
+      steps:
+        - name: Run black
+          if: ${{ always() && steps.install-deps.outcome == 'success' }}
+          run: |
+            black --check .

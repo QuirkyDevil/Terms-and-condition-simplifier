@@ -8,6 +8,7 @@
   },
 
   "icons": {
+<<<<<<< HEAD
     "128": "logo.png"
   },
 
@@ -18,4 +19,9 @@
       "js": ["content.js"]
     }
   ]
+=======
+    "128": "icon.png"
+  },
+  "permissions": ["activeTab", "tabs", "scripting"]
+>>>>>>> 15293615df258cb542f6a2f861f346b557f881fa
 }

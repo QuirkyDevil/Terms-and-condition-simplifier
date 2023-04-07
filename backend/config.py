@@ -1,7 +1,7 @@
 ###### Postgres Driver example
 # ==============================
 # DATABASE_DRIVERS = {
-#     "driver": "database.mongo",
+#     "driver": "backend.database.mongo",
 #     "config": {
 #         "connection_uri": "mongodb cluster connection uri",
 #         "database_name": "database name",
@@ -10,9 +10,9 @@
 # }
 
 DATABASE_DRIVERS = {
-    "driver": "database.postgres",
+    "driver": "backend.database.postgres",
     "config": {
-        "connection_uri": "your connection uri",
+        "connection_uri": "postgresql://localhost/alex_testing?user=alex&password=euu",
         "max_size": 100,  # the maximum amount of connections to create for the PostgreSQL connection pool
         "min_size": 75,  # the minimum amount of connections to create for the PostgreSQL connection pool
         "table_name": "major_project",  # the name of the table to use for the database
@@ -20,7 +20,7 @@ DATABASE_DRIVERS = {
 }
 
 CACHE_DRIVERS = {
-    "driver": "cache.memorycache",  # basic in memory cache. Cleared everytime your node shutsdown.
+    "driver": "backend.cache.memorycache",  # basic in memory cache. Cleared everytime your node shutsdown.
     "config": {}  # leave this empty as memory caches have no config
     # apart from the MAX_CACHE_SIZE which is inferred from the setting automatically.
 }
@@ -28,7 +28,7 @@ CACHE_DRIVERS = {
 ##### Redis Cache Driver example
 # ==============================
 # CACHE_DRIVERS = {
-#     "driver": "cache.rediscache",
+#     "driver": "backend.cache.rediscache",
 #     "config": {
 #         "connection_uri": "redis connection uri",
 #         "username": "username for auth",
@@ -54,7 +54,7 @@ CORS_ALLOWED_ORIGINS = ["*"]  # a list of allowed origins
 # that browsers are allowed to use in a Cross-Domain context.
 # by default, this is set to all domains.
 
-SECRET_KEY = "SET_A_CUSTOM_KEY"  # a secret key that will be checked in the 'Authorization' header
+SECRET_KEY = "chicken_biryani"  # a secret key that will be checked in the 'Authorization' header
 # whenever a POST request is made to /delete endpoint.
 
 ALLOWED_HOSTS = ["*"]  # set a list of allowed hosts.
@@ -63,3 +63,6 @@ ALLOWED_HOSTS = ["*"]  # set a list of allowed hosts.
 
 REQUIRE_AUTH_FOR_DELETE = True  # whether authorization is needed via the secret key
 # to delete the file
+
+LOG_FILE = "logs.log"  # the name of the log file to use for logging requests.
+# this is set to 'logs.log' by default.
