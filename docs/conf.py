@@ -95,6 +95,7 @@ def linkcode_resolve(domain, info):
             return None
         file = os.path.relpath(file, os.path.abspath(".."))
         file = file.replace("Terms-and-condition-simplifier/", "")
+        start, end = lines[1], lines[1] + len(lines[0]) - 1
 
         return f"https://github.com/QuirkyDevil/Terms-and-condition-simplifier/blob/main/{file}#L{start}-L{end}"
     except:
