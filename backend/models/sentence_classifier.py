@@ -1,9 +1,8 @@
 import re
 
-negative_list = []
-
 
 async def classify_sentiment(para, analyzer) -> list:
+    negative_list = []
     paragraph = re.split(r' *[\.\?!][\'"\)\]]* *', para)
     for text in paragraph:
         scores = analyzer.polarity_scores(text)

@@ -16,6 +16,7 @@ async def preprocess(text):
 
 async def scrape_and_summarize(analyzer, url: str, points: int = 20):
     """Scrape the terms and conditions and summarize them"""
+    text = ""
     text = await scrap_text(url)
     text = await preprocess(text)
     negative_text = await classify_sentiment(text, analyzer=analyzer)

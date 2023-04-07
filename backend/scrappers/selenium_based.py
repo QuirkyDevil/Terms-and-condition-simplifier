@@ -15,7 +15,7 @@ def scrap_text(input_user):
     terms and conditions of the site. It then clicks on the first link
     and waits for the page to load. It then fetches every text on the page"""
     string = input_user.replace(" ", "+")
-
+    text = ""
     options = ChromeOptions()
     options.add_argument("--headless")
     capa = options.to_capabilities()

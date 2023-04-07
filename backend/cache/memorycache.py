@@ -16,10 +16,9 @@ class InMemoryCache(Cache):
 
     async def get(self, key: str):
         summary = self._connection.get(key)
-        data = (key, summary)
-        if None in data:
+        if summary is None:
             return None
-        return data
+        return summary
 
     async def update(self, key: str, summary: str):
         self._connection[key] = summary

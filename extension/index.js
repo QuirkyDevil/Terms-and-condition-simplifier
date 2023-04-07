@@ -39,7 +39,9 @@ document.addEventListener("DOMContentLoaded", function () {
         return res.json();
       })
       .then((data) => {
-        summary.innerHTML = data;
+        console.log(data.summary);
+        const summaryText = data.summary.split('\n').join('<br /><br />');
+        summary.innerHTML = summaryText;
       })
       .catch((err) =>
         console.log("There was an error with the fetch operation")
@@ -60,7 +62,16 @@ document.addEventListener("DOMContentLoaded", function () {
           return res.json();
         })
         .then((data) => {
-          summary.innerHTML = data;
+          console.log(data.summary)
+          // add title to the summary
+          const title = document.createElement('h1');
+          title.innerHTML = company;
+          summary.appendChild(title);
+          // add summary to the summary
+          
+          
+          const summaryText = data.summary.split('\n').join('<br /><br />');
+          summary.innerHTML = summaryText;
         })
         .catch((err) =>
           console.log("There was an error with the fetch operation")
