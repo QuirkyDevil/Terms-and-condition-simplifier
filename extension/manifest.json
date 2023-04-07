@@ -10,5 +10,17 @@
   "icons": {
     "128": "logo.png"
   },
-  "permissions": ["activeTab", "tabs", "scripting"]
+  "permissions": ["activeTab", "tabs", "scripting"],
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*/*signup*",
+        "*://*/*login*",
+        "*://*/*register*",
+        "*://*/*welcome*",
+        "*://*/*join*"
+      ],
+      "js": ["myscript.js"]
+    }
+  ]
 }
