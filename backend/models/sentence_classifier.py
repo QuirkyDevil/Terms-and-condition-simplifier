@@ -1,7 +1,5 @@
 import re
 
-negative_list = []
-
 
 async def classify_sentiment(para, analyzer) -> list:
     """This function will classify the sentences as positive or negative.
@@ -10,6 +8,7 @@ async def classify_sentiment(para, analyzer) -> list:
     classify the sentences as positive or negative. It is created in the
     backend/functions/main.py file.
     """
+    negative_list = []
     paragraph = re.split(r' *[\.\?!][\'"\)\]]* *', para)
     for text in paragraph:
         scores = analyzer.polarity_scores(text)

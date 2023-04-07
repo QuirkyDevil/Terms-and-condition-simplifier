@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0"
+    />
+  </head>
+  <body>
+    <h4 class="title">Terms and conditions simplifier</h4>
+    <div class="search-bar">
+      <!-- <input type="text" placeholder="Enter company name" class="search"><button id="search_btn">search</button></input>
+       -->
+
+      <input
+        type="text"
+        placeholder="Enter company name..."
+        class="search"
+        id="myInput"
+      />
+      <button type="submit" id="search_btn">search</button>
+    </div>
+
+    <div id="summary"></div>
+    <div class="body" id="body">
+      <div class="companies">
+        <div class="boxes">
+          <div class="box" id="google">
+            <h4>Google</h4>
+            <img
+              src="./logos/icons8-google-48.png"
+              alt=""
+              height="30"
+              width="30"
+            />
+          </div>
+          <div class="box" id="facebook">
+            <h4>Facebook</h4>
+            <img
+              src="./logos/icons8-meta-48.png"
+              alt=""
+              height="30"
+              width="30"
+            />
+          </div>
+          <div class="box" id="twitter">
+            <h4>Twitter</h4>
+            <img
+              src="./logos/icons8-twitter-48.png"
+              alt=""
+              height="30"
+              width="30"
+            />
+          </div>
+          <div class="box" id="microsoft">
+            <h4>Microsoft</h4>
+            <img
+              src="./logos/icons8-microsoft-48.png"
+              alt=""
+              height="30"
+              width="30"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="enter-tnc" id="enter-tnc">
+        <h4>Enter terms and conditions</h4>
+      </div>
+      <div class="input_termsAndConditions">
+        <textarea type="text" class="terms_input" rows="8"></textarea>
+      </div>
+
+      <div class="bottom">
+        <button class="search_button">Generate summary</button>
+      </div>
+    </div>
+
+    <script src="./index.js"></script>
+  </body>
+</html>

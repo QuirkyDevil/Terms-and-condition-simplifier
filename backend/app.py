@@ -114,13 +114,13 @@ async def get_summary(company: str) -> JSONResponse:
                 await app.cache.set(company, result)
                 return {"status": 200, "data": result}
             raise HTTPException(status_code=404, detail="Company Not Found!")
-    return JSONResponse(content=check_cache, status_code=200)
+    return {"status": 200, "summary": check_cache}
 
 
 @app.get("/search_summary", tags=["general"])
 async def search_summary(company: str) -> JSONResponse:
     """Search."""
-    result = await app.DB.search(company)
+    result = await app.cache.search(company)
     if result:
         return JSONResponse(content=result, status_code=200)
     raise HTTPException(status_code=404, detail="Item not found")
@@ -130,7 +130,7 @@ async def search_summary(company: str) -> JSONResponse:
 async def list_companies() -> JSONResponse:
     result = await app.cache.list_all()
     if result:
-        return {"status": "success", "data": result}
+        return {"status": 200, "data": result}
     raise HTTPException(status_code=404, detail="No items found")
 
 

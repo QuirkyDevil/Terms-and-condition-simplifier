@@ -54,7 +54,7 @@ CORS_ALLOWED_ORIGINS = ["*"]  # a list of allowed origins
 # that browsers are allowed to use in a Cross-Domain context.
 # by default, this is set to all domains.
 
-SECRET_KEY = "SET_A_CUSTOM_KEY"  # a secret key that will be checked in the 'Authorization' header
+SECRET_KEY = "chicken_biryani"  # a secret key that will be checked in the 'Authorization' header
 # whenever a POST request is made to /delete endpoint.
 
 ALLOWED_HOSTS = ["*"]  # set a list of allowed hosts.

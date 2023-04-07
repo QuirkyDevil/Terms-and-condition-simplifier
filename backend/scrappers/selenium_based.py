@@ -18,7 +18,7 @@ def scrap_text(input_user):
     with the async/await syntax.
     """
     string = input_user.replace(" ", "+")
-
+    text = ""
     options = ChromeOptions()
     options.add_argument("--headless")
     capa = options.to_capabilities()

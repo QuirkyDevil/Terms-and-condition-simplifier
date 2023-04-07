@@ -19,6 +19,8 @@ async def final_summary(input_text, points: int = 20):
     """This is the summarizer corutine. In"""
     text = input_text
     bullet_points = points
+    final_output = []
+    summary_bullet = ""
 
     while bullet_points >= points:
         # splitting the text into sentences
