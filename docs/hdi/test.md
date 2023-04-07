@@ -9,7 +9,7 @@ For using this software as a chrome extension you can be a basic internet user. 
 How do I read documentation and get the most out of it? 
 It can be divided in following sections:
 1. How do I read the documentation?
-Ans. `API` section provides the documentation about the code, the modules, functions, corutines, etc. `HDI` is this section. It will provide all the basic information related to this project. From general FAQ to some very important questions and points you should remember will using or contributing to the software. `Test` section includes all the test related to the sotware and `Misc` includes the IEEE paper, some more documentation.
+Ans. The `API` section provides the documentation about the code, the modules, functions, corutines, etc. `HDI` is this section. It will provide all the basic information related to this project. From general FAQ to some very important questions and points you should remember will using or contributing to the software. `Test` section includes all the test related to the sotware and `Misc` includes the IEEE paper, some more documentation.
 2. Can't understand documentation in `API` folder?
 Ans. WIP
 <h4>Contributing</h4>
