@@ -1,5 +1,6 @@
 import re
 
+
 async def preprocess(text):
     """This is a utility function that will preprocess the text
     before it is sent to the NLP model. This will remove html tags,
@@ -13,11 +14,10 @@ async def preprocess(text):
     text = re.sub(r" +", " ", text).strip()  # remove extra spaces
     return text
 
+
 def min_sec(seconds: float) -> str:
-    """Convrts Minutes to seconds. _deprecreated_
-    """
+    """Convrts Minutes to seconds. _deprecreated_"""
     minutes, seconds = divmod(seconds, 60)
     if minutes:
         return f"{minutes:.0f}:{seconds:06.3f}s"
     return f"{seconds:.3f}s"
-

@@ -16,8 +16,7 @@ print(f"Time taken to load the models: {t2 - t1}")
 
 @ticktock_async
 async def final_summary(input_text, points: int = 20):
-    """This is the summarizer corutine. In 
-    """
+    """This is the summarizer corutine. In"""
     text = input_text
     bullet_points = points
 

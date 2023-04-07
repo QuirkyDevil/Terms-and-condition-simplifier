@@ -8,6 +8,7 @@ def ticktock(func):
     and print the time it took to run the function. This is useful
     for debugging and testing.
     """
+
     @wraps(func)
     def wrapper(*args, **kwargs):
         t1 = time.time()
@@ -24,6 +25,7 @@ def ticktock_async(func):
     """This is the same as ticktock, but for async functions
     as well. Using @ticktock will not work for async functions.
     """
+
     @wraps(func)
     async def wrapper(*args, **kwargs):
         t1 = time.time()

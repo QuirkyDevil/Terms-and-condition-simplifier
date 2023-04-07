@@ -7,10 +7,10 @@ from typing import Dict, Any
 sys.path.insert(0, os.path.abspath("."))
 sys.path.insert(0, os.path.abspath(".."))
 
-project = 'Terms and Condition Simplifier'
-copyright = '2023, Soham'
+project = "Terms and Condition Simplifier"
+copyright = "2023, Soham"
 
-release = '1.0.0'
+release = "1.0.0"
 
 extensions = [
     "sphinx.ext.autodoc",
@@ -36,13 +36,13 @@ myst_enable_extensions = [
 
 myst_heading_anchors = 3
 
-templates_path = ['_templates']
+templates_path = ["_templates"]
 
 exclude_patterns = ["build", ".DS_Store"]
 
 html_theme = "furo"
 
-html_static_path = ['_static']
+html_static_path = ["_static"]
 
 html_title = "Terms and Condition Simplifier"
 
@@ -65,6 +65,7 @@ html_theme_options: Dict[str, Any] = {
     "source_branch": "main",
     "source_directory": "docs/",
 }
+
 
 def linkcode_resolve(domain, info):
     # i absolutely MUST add this here or else

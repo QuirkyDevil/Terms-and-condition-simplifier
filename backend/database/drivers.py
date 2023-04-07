@@ -7,12 +7,13 @@ class Driver:
     contains the basic methods that every database driver should have.
     The methods that are not implemented in the child class will raise
     a NotImplementedError. This class also contains a set_custom_val
-    method that will help setting custom values that are not supported 
+    method that will help setting custom values that are not supported
     by the database driver. This method will also cache the values in
     the cache_values attribute. This attribute is a dictionary that
     contains the custom values that are set by the set_custom_val method.
 
     """
+
     def __init__(self):
         self._connection = None  # this connection instance
         # is filled in the connect method.
@@ -22,13 +23,11 @@ class Driver:
         # with custom values that are set by the set_custom_val method.
 
     async def connect(self, **kwargs):
-        """**[COMPULSARY]** Base driver connect method. This method should be implemented.
-        """
+        """**[COMPULSARY]** Base driver connect method. This method should be implemented."""
         raise NotImplementedError
 
     async def add(self, *args, **kwargs):
-        """**[COMPULSARY]** Base driver add method. This method should be implemented.
-        """
+        """**[COMPULSARY]** Base driver add method. This method should be implemented."""
         raise NotImplementedError
 
     async def search(self, *args, **kwargs):
@@ -52,7 +51,7 @@ class Driver:
         raise NotImplementedError
 
     def set_custom_val(self, key: str, value: str):
-        """set a custom value that is not supported by the database driver. 
+        """set a custom value that is not supported by the database driver.
         This method will also cache the values in the cache_values attribute.
         This attribute is a dictionary that contains the custom values that
         are set by the set_custom_val method.

@@ -9,7 +9,7 @@ from .drivers import Driver  # import the base driver impl
 class MongoDriver(Driver):
     """Asynchronous MongoDB driver implementation. This class inherits from the
     Driver class. This class contains the methods that are specific to
-    MongoDB. This class also contains the connect method that will 
+    MongoDB. This class also contains the connect method that will
     connect to the database and return the connection instance.
     """
 

@@ -2,11 +2,7 @@ import os
 import inspect
 import importlib
 
-info = {
-    "module" : "backend.cache.basecache",
-    "fullname" : "Cache"
-
-}
+info = {"module": "backend.cache.basecache", "fullname": "Cache"}
 mod = importlib.import_module(info["module"])
 if "." in info["fullname"]:
     objname, attrname = info["fullname"].split(".")
@@ -14,7 +10,7 @@ if "." in info["fullname"]:
     try:
         obj = getattr(obj, attrname)
     except AttributeError:
-        print('euu3')
+        print("euu3")
 else:
     obj = getattr(mod, info["fullname"])
 
@@ -28,8 +24,8 @@ try:
     file = file.replace("Terms-and-condition-simplifier/", "")
 except TypeError:
     # e.g. object is a typing.Union
-    print('euu4')
+    print("euu4")
 start, end = lines[1], lines[1] + len(lines[0]) - 1
 
-ff =  f"https://github.com/QuirkyDevil/Terms-and-condition-simplifier/blob/main/{file}#L{start}-L{end}"
+ff = f"https://github.com/QuirkyDevil/Terms-and-condition-simplifier/blob/main/{file}#L{start}-L{end}"
 print(ff)

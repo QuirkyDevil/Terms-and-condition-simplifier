@@ -15,7 +15,7 @@ def scrap_text(input_user):
     terms and conditions of the site. It then clicks on the first link
     and waits for the page to load. It then fetches every text on the
     page and returns it. This function is asynchronous and can be used
-    with the async/await syntax. 
+    with the async/await syntax.
     """
     string = input_user.replace(" ", "+")
 

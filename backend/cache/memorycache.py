@@ -37,7 +37,7 @@ class InMemoryCache(Cache):
         """Delete a document in the cache and return whether the delete succeeded or failed"""
         try:
             self._connection.pop(key)
-            self._connection.pop(key) # safe side to make sure it's deleted
+            self._connection.pop(key)  # safe side to make sure it's deleted
         except KeyError:
             return False  # failed
         return True  # success
@@ -55,7 +55,7 @@ class InMemoryCache(Cache):
         return self._connection
 
     async def cleanup(self):
-        """Cleanup the cache. Believe it or not, there is a 
+        """Cleanup the cache. Believe it or not, there is a
         cleanup operation for a dictionary.
         """
         # believe it or not
