@@ -8,10 +8,11 @@ document.addEventListener("DOMContentLoaded", function () {
   const searchButton = document.getElementById("search_btn");
 
   //static websites
-  const google = document.getElementById("google");
-  const facebook = document.getElementById("facebook");
-  const twitter = document.getElementById("twitter");
-  const microsoft = document.getElementById("microsoft");
+
+  const googleBtn = document.getElementById("google");
+  const facebookBtn = document.getElementById("facebook");
+  const twitterBtn = document.getElementById("twitter");
+  const microsoftBtn = document.getElementById("microsoft");
 
   const root_link = "http://localhost:8000"; //change this link to api
   const get_summary = "/get_summary";
@@ -40,7 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
       })
       .then((data) => {
         console.log(data.summary);
-        const summaryText = data.summary.split('\n').join('<br /><br />');
+        const summaryText = data.summary.split("\n").join("<br /><br />");
         summary.innerHTML = summaryText;
       })
       .catch((err) =>
@@ -62,15 +63,14 @@ document.addEventListener("DOMContentLoaded", function () {
           return res.json();
         })
         .then((data) => {
-          console.log(data.summary)
+          console.log(data.summary);
           // add title to the summary
-          const title = document.createElement('h1');
+          const title = document.createElement("h1");
           title.innerHTML = company;
           summary.appendChild(title);
           // add summary to the summary
-          
-          
-          const summaryText = data.summary.split('\n').join('<br /><br />');
+
+          const summaryText = data.summary.split("\n").join("<br /><br />");
           summary.innerHTML = summaryText;
         })
         .catch((err) =>
@@ -79,8 +79,8 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  staticCompanies(google, "google");
-  staticCompanies(facebook, "facebook");
-  staticCompanies(twitter, "twitter");
-  staticCompanies(microsoft, "microsoft");
+  staticCompanies(googleBtn, "google");
+  staticCompanies(facebookBtn, "facebook");
+  staticCompanies(twitterBtn, "twitter");
+  staticCompanies(microsoftBtn, "microsoft");
 });
