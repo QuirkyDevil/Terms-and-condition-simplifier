@@ -2,12 +2,7 @@ venv
 .vscode
 .DS_Store
 **/__pycache__
-<<<<<<< HEAD
-docs/_build
-docs/crowdin.py
-*.buildinfo
-=======
 build
 docs/_build
 docs/crowdin.py
->>>>>>> 15293615df258cb542f6a2f861f346b557f881fa
+

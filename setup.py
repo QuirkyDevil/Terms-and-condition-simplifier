@@ -1,11 +1,3 @@
-<<<<<<< HEAD
-# from datasets import load_dataset
-# from transformers import BertTokenizer
-
-# xsum = load_dataset("xsum")
-# cnn_dailymail = load_dataset("cnn_dailymail", "3.0.0")
-# tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
-=======
 import sys
 import subprocess
 
@@ -47,4 +39,3 @@ except ImportError:
 # subprocess.check_call("conda install pytorch torchvision torchaudio -c pytorch")
 # subprocess.check_call("conda install -c conda-forge spacy")
 # subprocess.check_call("conda install -c conda-forge transformers")
->>>>>>> 15293615df258cb542f6a2f861f346b557f881fa
