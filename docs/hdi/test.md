@@ -1,5 +1,7 @@
 # Read Documentation
+
 <b>This section will answer most of the things related to the software. From questions, doubts, isuues, How to do, etc. </b>
+
 <h4>Who can use this sotware?</h4>
 For using this software as a chrome extension you can be a basic internet user. But if you want to use our API you should know basic basic get, post requests in any programming language you are confortable with and parsing through the JSON response. For contributing you have the minimum skills of
 <li>Intermediate Python</li>
@@ -13,4 +15,4 @@ Ans. The `API` section provides the documentation about the code, the modules, f
 2. Can't understand documentation in `API` folder?
 Ans. WIP
 <h4>Contributing</h4>
-If you want any more information to be added to this, please open an issue in the repo. If we find the issue to be valid and worth adding to the documentation we will add it. Please make sure not to repeat the simillar event that already exist in the documentation or in the github repo. 
+If you want any more information to be added to this, please open an issue in the repo. If we find the issue to be valid and worth adding to the documentation we will add it. Please make sure not to repeat the simillar event that already exist in the documentation or in the github repo.

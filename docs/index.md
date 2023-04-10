@@ -6,15 +6,12 @@ hide-toc: true
 
 ![](https://raw.githubusercontent.com/QuirkyDevil/Terms-and-condition-simplifier/main/banner.jpg)
 
-
-
-Terms and Condition Simplifier is a tool that helps you to understand the terms and conditions of a website. It is a web application that uses Natural Language Processing to simplify the terms and conditions of a website. It is built using Python and FastAPI. 
-
+Terms and Condition Simplifier is a tool that helps you to understand the terms and conditions of a website. It is a web application that uses Natural Language Processing to simplify the terms and conditions of a website. It is built using Python and FastAPI.
 
 ## Quick Links:
+
 - [Quickstart](quickstart.md)
 - [Frequently Asked Questions](faq.md)
-
 
 ```{toctree}
 :caption: Before You Start
