@@ -33,7 +33,6 @@ def final_summary(file):
             sentences_remaining -= next_chunk_size
 
             inputs = tokenizer(sentence, return_tensors="pt", padding="longest")
-            # inputs = inputs.to(DEVICE)
             original_input_length = len(inputs["input_ids"][0])
 
             # checking if the length of the input batch is less than 150
@@ -54,7 +53,6 @@ def final_summary(file):
                 while length_sent > 0:
                     halved_sentence = "".join(sent[j : j + sent_remaining])
                     halved_inputs = tokenizer(halved_sentence, return_tensors="pt")
-                    # halved_inputs = halved_inputs.to(DEVICE)
                     halved_summary_ids = model.generate(halved_inputs["input_ids"])
                     j += sent_remaining
                     length_sent -= sent_remaining
