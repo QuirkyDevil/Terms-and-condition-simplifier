@@ -14,7 +14,7 @@ Terms and Conditions Simplifier
 
 ---
 
-This is a simple python script that takes a Terms and Conditions document and simplifies it. It does this by removing all the legal jargon and only keeping the important parts. It also removes all the unnecessary words and phrases.
+This is an API which can also be used as extension supported by chromium based browsers that takes a Terms and Conditions document and simplifies it. It does this by removing all the legal jargon and only keeping the important parts. It also removes all the unnecessary words and phrases.
 
 ## Setup
 
@@ -50,6 +50,8 @@ uvicorn backend.app:app --workers 3
 Please keep in mind that both Uvicorn and Hypercorn support running applications through the Unix Domain Socket (UDS) protocol rather than the Transmission Control Protocol (TCP). The choice is yours.
 
 On another note, keep in mind that the amount of workers you have will only affect performance if your machine's CPU core count supports it. Else, increasing the worker count will not be helpful at all.
+
+⚠️ Minimum RAM needed for a single worker is around 2.5-3 Gbs. Please consider it and adjust worker according to your machine.
 
 To read more about sockets and which protocol will be the right one for you, please refer to this article: https://www.digitalocean.com/community/tutorials/understanding-sockets
 
