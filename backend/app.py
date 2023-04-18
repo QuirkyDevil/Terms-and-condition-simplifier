@@ -11,6 +11,7 @@ from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
 
 from backend.functions.main import scrape_and_summarize
+from backend.functions.main import summerize_usertext
 import backend.config as settings
 
 
@@ -145,6 +146,16 @@ async def add(company: str) -> JSONResponse:
         return JSONResponse(content=result, status_code=200)
     raise HTTPException(status_code=404, detail="Company Not Found!")
 
+@app.get("/user_summary", tags=["general"])
+async def user_summary(text: str) -> JSONResponse:
+    result = await summerize_usertext(analyzer, text)
+
+    if result: 
+        return {"status": 200, "data": result}
+    
+    raise HTTPException(status_code=404, detail="Error while generating summary")
+
+
 
 @app.post("/purge_cache", tags=["admin"])
 async def purge_cache(secret_key: str) -> JSONResponse:
@@ -178,3 +189,5 @@ async def delete(company: str, secret_key: str) -> JSONResponse:
     if db_deleted is False or cache_Deleted or False:
         status_codes = 500
     return JSONResponse(content=None, status_code=status_codes)
+
+

@@ -35,8 +35,7 @@ var body = document.querySelector("body");
 body.appendChild(button);
 
 button.addEventListener("click", function () {
-  alert("Button clicked!");
-  console.log("Hiihsdisid");
+  chrome.runtime.openOptionsPage();
 });
 
 button.addEventListener("mouseover", function () {
