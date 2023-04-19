@@ -30,3 +30,12 @@ async def summerize_without_classify(url: str, points: int = 20):
     text = await scrap_text(url)
     summary = await final_summary(text, points)
     return summary
+
+
+async def summerize_usertext(analyzer, text: str, points: int = 20):
+    """This is a function that will directly take user inputed terms and conditions and summerize it"""
+
+    text = await preprocess(text)
+    negative_text = await classify_sentiment(text, analyzer=analyzer)
+    summary = await final_summary(negative_text, points)
+    return summary

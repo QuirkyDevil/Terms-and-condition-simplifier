@@ -4,9 +4,9 @@ document.addEventListener("DOMContentLoaded", function () {
   console.log(bodyEle);
 
   const summary = document.getElementById("summary");
-
+  const userButton = document.getElementById("user_button");
   const searchButton = document.getElementById("search_btn");
-
+  const textarea = document.getElementById("terms_input");
   //static websites
 
   const googleBtn = document.getElementById("google");
@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const root_link = "http://localhost:8000"; //change this link to api
   const get_summary = "/get_summary";
+  const user_summary = "/user_summary";
 
   function getCompanyName() {
     let company_input = document.getElementById("myInput");
@@ -83,4 +84,27 @@ document.addEventListener("DOMContentLoaded", function () {
   staticCompanies(facebookBtn, "facebook");
   staticCompanies(twitterBtn, "twitter");
   staticCompanies(microsoftBtn, "microsoft");
+
+  userButton.addEventListener("click", function () {
+    const text = textarea.value;
+
+    bodyEle.style.display = "none";
+
+    fetch(root_link + user_summary + "?text=" + text)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("network response was not ok");
+        }
+
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data.summary);
+        const summaryText = data.summary.split("\n").join("<br /><br />");
+        summary.innerHTML = summaryText;
+      })
+      .catch((err) =>
+        console.log("There was an error with the fetch operation")
+      );
+  });
 });
