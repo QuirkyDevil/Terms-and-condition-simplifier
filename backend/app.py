@@ -149,6 +149,7 @@ async def add(company: str) -> JSONResponse:
 
 @app.get("/user_summary", tags=["general"])
 async def user_summary(text: str) -> JSONResponse:
+    """Give summary of provided text/t&c by user."""
     result = await summerize_usertext(analyzer, text)
 
     if result:
@@ -159,6 +160,7 @@ async def user_summary(text: str) -> JSONResponse:
 
 @app.post("/purge_cache", tags=["admin"])
 async def purge_cache(secret_key: str) -> JSONResponse:
+    """Purge entire cache."""
     if secret_key != settings.SECRET_KEY:
         return JSONResponse(content={"error": "unauthorized"}, status_code=401)
     await app.cache.purge()
@@ -167,6 +169,7 @@ async def purge_cache(secret_key: str) -> JSONResponse:
 
 @app.put("/update", tags=["admin"])
 async def update(company: str, secret_key: str) -> JSONResponse:
+    """Update Terms and condition summary of a company."""
     if secret_key != settings.SECRET_KEY:
         return JSONResponse(content={"error": "unauthorized"}, status_code=401)
     summary = await scrape_and_summarize(analyzer, company)
@@ -180,7 +183,7 @@ async def update(company: str, secret_key: str) -> JSONResponse:
 
 @app.delete("/delete", tags=["admin"])
 async def delete(company: str, secret_key: str) -> JSONResponse:
-    """Delete."""
+    """Deletes a company from the database and cache."""
     if secret_key != settings.SECRET_KEY:
         return JSONResponse(content={"error": "unauthorized"}, status_code=401)
     db_deleted = await app.DB.delete(company)
