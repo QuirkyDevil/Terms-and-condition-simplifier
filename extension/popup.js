@@ -2,7 +2,7 @@ const root_link = "http://localhost:8000"; //change this link to api
 const get_summary = "/get_summary";
 const user_summary = "/user_summary";
 
-let body = document.querySelector('body');
+let body = document.querySelector("body");
 var button = document.createElement("button");
 
 // var img = document.createElement("img");
@@ -56,7 +56,10 @@ button.addEventListener("click", () => {
       const summaryText = data.summary.split("\n").join("<br /><br />");
       summary.innerHTML = summaryText;
     })
-    .catch((err) => summary.innerHTML = `There was an error with the fetch operation ${err}`);
+    .catch(
+      (err) =>
+        (summary.innerHTML = `There was an error with the fetch operation ${err}`)
+    );
 });
 
 button.addEventListener("mouseover", () => {
