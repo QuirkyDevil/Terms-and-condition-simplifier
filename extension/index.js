@@ -99,8 +99,8 @@ document.addEventListener("DOMContentLoaded", function () {
         return res.json();
       })
       .then((data) => {
-        console.log(data.summary);
-        const summaryText = data.summary.split("\n").join("<br /><br />");
+        console.log(data.data);
+        const summaryText = data.data.split('\n').join('<br /><br />');
         summary.innerHTML = summaryText;
       })
       .catch((err) =>
