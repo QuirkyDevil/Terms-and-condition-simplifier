@@ -1,16 +1,7 @@
 const root_link = "http://localhost:8000"; //change this link to api
 const get_summary = "/get_summary";
-const user_summary = "/user_summary";
 
-var button = document.createElement("button");
-
-// var img = document.createElement("img");
-
-// img.src = "chrome-extension://lobbenadnepajcechbdkgnlbgiofcddh/logo.png";
-
-// img.style.height = "200px";
-
-// img.style.width = "200px";
+let button = document.createElement("button");
 
 button.innerHTML = "T&CS";
 
@@ -34,13 +25,13 @@ button.style.display = "flex";
 button.style.justifyContent = "center";
 button.style.alignItems = "center";
 
-var body = document.querySelector("body");
+let body = document.querySelector("body");
 body.appendChild(button);
 
 button.addEventListener("click", function () {
-  var url = window.location.href;
+  let url = window.location.href;
 
-  var company = url.split("/")[2];
+  let company = url.split("/")[2];
 
   company = company.replace(/^www\./, "").replace(/\.com$/, "");
 
@@ -53,11 +44,12 @@ button.addEventListener("click", function () {
       return res.json();
     })
     .then((data) => {
-      console.log(data.summary);
-      const summaryText = data.summary.split("\n").join("<br /><br />");
-      summary.innerHTML = summaryText;
+      console.log(data.data);
+      const summaryText = data.data.split("\n").join("<br /><br />");
     })
-    .catch((err) => console.log("There was an error with the fetch operation"));
+    .catch((err) =>
+      console.log("There was an error with the fetch operation", err)
+    );
 });
 
 button.addEventListener("mouseover", function () {
