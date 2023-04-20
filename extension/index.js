@@ -41,8 +41,8 @@ document.addEventListener("DOMContentLoaded", function () {
         return res.json();
       })
       .then((data) => {
-        console.log(data.summary);
-        const summaryText = data.summary.split("\n").join("<br /><br />");
+        console.log(data.data);
+        const summaryText = data.data.split("\n").join("<br /><br />");
         summary.innerHTML = summaryText;
       })
       .catch((err) =>
@@ -64,14 +64,14 @@ document.addEventListener("DOMContentLoaded", function () {
           return res.json();
         })
         .then((data) => {
-          console.log(data.summary);
+          console.log(data.data);
           // add title to the summary
           const title = document.createElement("h1");
           title.innerHTML = company;
           summary.appendChild(title);
           // add summary to the summary
 
-          const summaryText = data.summary.split("\n").join("<br /><br />");
+          const summaryText = data.data.split("\n").join("<br /><br />");
           summary.innerHTML = summaryText;
         })
         .catch((err) =>
@@ -99,8 +99,8 @@ document.addEventListener("DOMContentLoaded", function () {
         return res.json();
       })
       .then((data) => {
-        console.log(data.summary);
-        const summaryText = data.summary.split("\n").join("<br /><br />");
+        console.log(data.data);
+        const summaryText = data.data.split("\n").join("<br /><br />");
         summary.innerHTML = summaryText;
       })
       .catch((err) =>
