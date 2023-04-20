@@ -20,7 +20,28 @@
         "*://*/*welcome*",
         "*://*/*join*"
       ],
-      "js": ["popup.js"]
+      "conditions": [
+        {
+          "type": "pathEquals",
+          "path": "signup"
+        },
+        {
+          "type": "pathEquals",
+          "path": "login"
+        },
+        {
+          "type": "pathEquals",
+          "path": "register"
+        },
+        {
+          "type": "pathEquals",
+          "path": "welcome"
+        },
+        {
+          "type": "pathEquals",
+          "path": "join"
+        }
+      ]
     }
   ]
 }
