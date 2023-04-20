@@ -30,12 +30,11 @@ body.appendChild(button);
 
 button.addEventListener("click", function () {
   let url = window.location.href;
-
   let company = url.split("/")[2];
 
   company = company.replace(/^www\./, "").replace(/\.com$/, "");
 
-  fetch(root_link + get_summary + "?company=" + company)
+  fetch(` ${root_link + get_summary}?company=${company}`)
     .then((res) => {
       if (!res.ok) {
         throw new Error("network response was not ok");
@@ -44,24 +43,16 @@ button.addEventListener("click", function () {
       return res.json();
     })
     .then((data) => {
-      console.log(data.data);
-      const summaryText = data.data.split("\n").join("<br /><br />");
+      const summaryText = data.summary.split("\n").join("<br /><br />");
+      summary.innerHTML = summaryText;
     })
-    .catch((err) =>
-      console.log("There was an error with the fetch operation", err)
-    );
+    .catch((err) => summary.innerHTML = `There was an error with the fetch operation ${err}`);
 });
 
-button.addEventListener("mouseover", function () {
+button.addEventListener("mouseover", () => {
   button.style.backgroundColor = "#FFC200";
 });
 
-button.addEventListener("mouseout", function () {
+button.addEventListener("mouseout", () => {
   button.style.backgroundColor = "#FF3A3A";
 });
-
-img.onerror = function (event) {
-  console.log(event.type); // "error"
-  console.log(event.target.src); // image source URL that failed to load
-  console.log(event.target.error); // error object that caused the error
-};

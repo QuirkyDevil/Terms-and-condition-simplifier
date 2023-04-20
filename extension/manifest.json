@@ -42,7 +42,6 @@
           "path": "join"
         }
       ],
-      "js": ["popup.js"]
     }
   ]
 }
