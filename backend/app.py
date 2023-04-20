@@ -115,7 +115,7 @@ async def get_summary(company: str) -> JSONResponse:
                 await app.cache.set(company, result)
                 return {"status": 200, "data": result}
             raise HTTPException(status_code=404, detail="Company Not Found!")
-    return {"status": 200, "summary": check_cache}
+    return {"status": 200, "data": check_cache}
 
 
 @app.get("/search_summary", tags=["general"])
