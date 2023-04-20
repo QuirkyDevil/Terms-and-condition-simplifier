@@ -46,7 +46,10 @@ button.addEventListener("click", function () {
       const summaryText = data.summary.split("\n").join("<br /><br />");
       summary.innerHTML = summaryText;
     })
-    .catch((err) => summary.innerHTML = `There was an error with the fetch operation ${err}`);
+    .catch(
+      (err) =>
+        (summary.innerHTML = `There was an error with the fetch operation ${err}`)
+    );
 });
 
 button.addEventListener("mouseover", () => {
