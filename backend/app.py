@@ -107,7 +107,7 @@ async def get_summary(company: str) -> JSONResponse:
         check_db = await app.DB.search(company)
         if check_db:
             await app.cache.set(company, check_db[1])
-            return JSONResponse(content=check_db, status_code=200)
+            return {"status": 200, "data": check_db[1]}
         else:
             result = await scrape_and_summarize(analyzer, company)
             if result:
@@ -123,7 +123,7 @@ async def search_summary(company: str) -> JSONResponse:
     """Search."""
     result = await app.cache.search(company)
     if result:
-        return JSONResponse(content=result, status_code=200)
+        return {"status": 200, "data": result}
     raise HTTPException(status_code=404, detail="Item not found")
 
 

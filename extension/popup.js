@@ -2,7 +2,7 @@ const root_link = "http://localhost:8000"; //change this link to api
 const get_summary = "/get_summary";
 const user_summary = "/user_summary";
 
-let body = document.querySelector('body');
+const body = document.querySelector('body');
 var button = document.createElement("button");
 
 // var img = document.createElement("img");
@@ -38,13 +38,13 @@ button.style.alignItems = "center";
 body.appendChild(button);
 
 button.addEventListener("click", () => {
-  let url = window.location.href;
+  const url = window.location.href;
 
   let company = url.split("/")[2];
 
   company = company.replace(/^www\./, "").replace(/\.com$/, "");
 
-  fetch(`${root_link + get_summary}?company=${company}`)
+  fetch(` ${root_link + get_summary}?company=${company}`)
     .then((res) => {
       if (!res.ok) {
         throw new Error("network response was not ok");
