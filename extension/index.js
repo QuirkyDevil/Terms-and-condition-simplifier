@@ -101,6 +101,8 @@ document.addEventListener("DOMContentLoaded", function () {
       .then((data) => {
         console.log(data.data);
         const summaryText = data.data.split("\n").join("<br /><br />");
+        console.log(data.data);
+
         summary.innerHTML = summaryText;
       })
       .catch((err) =>
