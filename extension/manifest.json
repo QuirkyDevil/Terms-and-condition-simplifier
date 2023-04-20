@@ -41,7 +41,8 @@
           "type": "pathEquals",
           "path": "join"
         }
-      ]
+      ],
+      "js": ["popup.js"]
     }
   ]
 }
