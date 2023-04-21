@@ -37,9 +37,42 @@ def scrap_text(input_user):
                 (By.XPATH, "//h3[@class='LC20lb MBeuO DKV0Md']")
             )
         )
+
+        url_name = wait.until(
+            EC.presence_of_element_located(
+                (By.XPATH, "//cite[contains(@class, 'qLRx3b')]")
+            )
+        )
+
         driver.execute_script("window.stop();")
-        # wait until the first link is loaded and then click on it
-        first_link.click()
+
+        url_company_name = input_user.replace(" ", "").lower()
+
+        keywords = [
+            "legal",
+            "terms",
+            "terms-of-use",
+            "terms-and-conditions",
+            "conditions",
+            "policies",
+            "terms-of-service",
+            "servicesagreement",
+            "condition",
+            "term",
+            "service",
+        ]
+
+        if url_company_name in url_name.text and (
+            any(keyword in url_name.text for keyword in keywords)
+            or any(keyword in first_link.text for keyword in keywords)
+        ):
+            # wait until the first link is loaded and then click on it
+
+            first_link.click()
+
+        else:
+            return 500
+
     except TimeoutError:
         driver.quit()
         return 500
