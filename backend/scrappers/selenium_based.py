@@ -9,6 +9,7 @@ from selenium.webdriver.chrome.options import Options as ChromeOptions
 from backend.decorators.basic import executor
 
 
+
 @executor()
 def scrap_text(input_user):
     """This function opens a chrome browser and searches for the
@@ -32,14 +33,49 @@ def scrap_text(input_user):
     wait = WebDriverWait(driver, 5)
     driver.get("https://www.google.com/search?q=" + string + "+terms+and+conditions")
     try:
+       
+
+        
         first_link = wait.until(
+            
             EC.presence_of_element_located(
                 (By.XPATH, "//h3[@class='LC20lb MBeuO DKV0Md']")
             )
         )
+
+        url_name = wait.until(
+            EC.presence_of_element_located(
+                (By.XPATH, "//cite[contains(@class, 'qLRx3b')]")
+            )
+        )
+        
+
+      
+
         driver.execute_script("window.stop();")
-        # wait until the first link is loaded and then click on it
-        first_link.click()
+
+        print("the url name is: " + url_name.text)
+        url_company_name = input_user.replace(" ", "").lower()
+
+        keywords = ["legal", "terms", "terms-of-use", "terms-and-conditions", "conditions", "policies", "terms-of-service", "servicesagreement", "condition", "term", "service"]
+    
+        if url_company_name in url_name.text and (any(keyword in url_name.text for keyword in keywords) or any(keyword in first_link.text for keyword in keywords)):
+            # wait until the first link is loaded and then click on it
+            
+            first_link.click()
+
+        else:
+           
+            return 500
+
+        
+
+        
+
+      
+        
+       
+       
     except TimeoutError:
         driver.quit()
         return 500
@@ -57,3 +93,5 @@ def scrap_text(input_user):
 
 if __name__ == "__main__":
     print(scrap_text("facebook"))
+   
+   
