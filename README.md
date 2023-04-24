@@ -85,7 +85,7 @@ asyncio.get_event_loop().run_until_complete(main())
 ###Loading a Chrome Extension in the Extension Folder
 
 -Download the extension files and save them to a folder on your computer.
--Open the Google Chrome browser and navigate to the Extensions page. To do this, click on the three dots in the top right corner of the browser window and select "More   tools" > "Extensions".
+-Open the Google Chrome browser and navigate to the Extensions page. To do this, click on the three dots in the top right corner of the browser window and select "More tools" > "Extensions".
 -Enable Developer mode by toggling the switch in the top right corner of the page.
 -Click on the "Load unpacked" button in the top left corner of the page.
 -In the file browser window, navigate to the folder where you saved the extension files and select the folder.
