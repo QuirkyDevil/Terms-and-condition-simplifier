@@ -62,6 +62,7 @@ async def startup_event():
     app.DB = driver
     app.cache = cache_driver
 
+
 # on shutdown
 @app.on_event("shutdown")
 async def shutdown_event():

@@ -14,5 +14,3 @@ URL_KEYWORDS = [
     "term",
     "service",
 ]
-
-

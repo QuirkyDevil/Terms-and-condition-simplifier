@@ -13,7 +13,7 @@ from backend.decorators.basic import executor
 
 
 @executor()
-def scrap_text(driver: webdriver ,company_name: str):
+def scrap_text(driver: webdriver, company_name: str):
     """This function opens a chrome browser and searches for the
     terms and conditions of the site. It then clicks on the first link
     and waits for the page to load. It then fetches every text on the
@@ -72,5 +72,7 @@ if __name__ == "__main__":
     capa = options.to_capabilities()
     capa["pageLoadStrategy"] = "none"
     chrome_driver = ChromeDriverManager().install()
-    driver = webdriver.Chrome(service=ChromeService(chrome_driver), desired_capabilities=capa)
+    driver = webdriver.Chrome(
+        service=ChromeService(chrome_driver), desired_capabilities=capa
+    )
     print(scrap_text(driver, "facebook"))

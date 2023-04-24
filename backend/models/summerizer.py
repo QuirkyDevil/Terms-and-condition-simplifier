@@ -48,7 +48,7 @@ async def final_summary(input_text, points: int = 20):
                 split_sentences = nlp(sentence)
                 for split_sentence in split_sentences.sents:
                     output.append(str(split_sentence).rstrip("."))
- 
+
             # checking if the length of the input batch is greater than 1024
             elif original_input_length > 1024:
                 sent = sent_tokenize(sentence)

@@ -4,6 +4,7 @@ from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
 analyzer = SentimentIntensityAnalyzer()
 
+
 async def classify_sentiment(para) -> list:
     """This function will classify the sentences as positive or negative.
     It will return a list of negative sentences. It takes in the paragraph
