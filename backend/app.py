@@ -7,19 +7,15 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.middleware.httpsredirect import HTTPSRedirectMiddleware
 
-from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
-
 
 from backend.functions.main import scrape_and_summarize
 from backend.functions.main import summerize_usertext
 import backend.config as settings
 
 
-app = FastAPI(title="Terms and Condition Simplifier", version="0.1.0 Alpha")
+app = FastAPI(title="Terms and Condition Simplifier", version="1.0")
 app.add_middleware(CORSMiddleware, allow_origins=settings.CORS_ALLOWED_ORIGINS)
 app.add_middleware(TrustedHostMiddleware, allowed_hosts=settings.ALLOWED_HOSTS)
-
-analyzer = SentimentIntensityAnalyzer()
 
 app.cache = None
 app.DB = None
@@ -48,10 +44,6 @@ def _check_cache_driver() -> Tuple[type, str]:
     return (driver, _type)
 
 
-async def the_process():
-    ...
-
-
 # on startup
 @app.on_event("startup")
 async def startup_event():
@@ -69,7 +61,6 @@ async def startup_event():
 
     app.DB = driver
     app.cache = cache_driver
-
 
 # on shutdown
 @app.on_event("shutdown")
@@ -109,7 +100,7 @@ async def get_summary(company: str) -> JSONResponse:
             await app.cache.set(company, check_db[1])
             return {"status": 200, "data": check_db[1]}
         else:
-            result = await scrape_and_summarize(analyzer, company)
+            result = await scrape_and_summarize(company)
             if result:
                 await app.DB.add(company, result, datetime.datetime.now())
                 await app.cache.set(company, result)
@@ -138,7 +129,7 @@ async def list_companies() -> JSONResponse:
 @app.get("/add_company", tags=["general"])
 async def add(company: str) -> JSONResponse:
     """Add."""
-    result = await scrape_and_summarize(analyzer, company)
+    result = await scrape_and_summarize(company)
     if result:
         await app.DB.add(company, result, datetime.datetime.now())
         data = (result, datetime.datetime.now())
@@ -150,7 +141,7 @@ async def add(company: str) -> JSONResponse:
 @app.get("/user_summary", tags=["general"])
 async def user_summary(text: str) -> JSONResponse:
     """Give summary of provided text/t&c by user."""
-    result = await summerize_usertext(analyzer, text)
+    result = await summerize_usertext(text)
 
     if result:
         return {"status": 200, "data": result}
@@ -172,7 +163,7 @@ async def update(company: str, secret_key: str) -> JSONResponse:
     """Update Terms and condition summary of a company."""
     if secret_key != settings.SECRET_KEY:
         return JSONResponse(content={"error": "unauthorized"}, status_code=401)
-    summary = await scrape_and_summarize(analyzer, company)
+    summary = await scrape_and_summarize(company)
     db_updated = await app.DB.update(company, summary, datetime.datetime.now())
     cache_updated = await app.cache.update(company, summary)
     status_codes = 204

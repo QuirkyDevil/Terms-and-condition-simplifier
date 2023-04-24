@@ -8,10 +8,12 @@ async def preprocess(text):
     characters. It is necessary to remove unnecesry characters because
     the NLP model will not work properly if there are extra characters.
     """
+    
     text = text.encode("ascii", "ignore").decode()  # remove non-ascii characters
     text = re.sub(r"<.*?>", "", text)  # remove html tags
     text = re.sub(r"[\n\t]+", " ", text)  # remove new lines and tabs
     text = re.sub(r" +", " ", text).strip()  # remove extra spaces
+    text = text.lower()  # convert to lowercase
     return text
 
 
