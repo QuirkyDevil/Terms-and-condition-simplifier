@@ -27,13 +27,26 @@ document.addEventListener("DOMContentLoaded", function () {
     return company_name;
   }
 
+  function showLoadingAnimation() {
+    document.getElementById("loading").style.display = "block";
+  }
+
+  function hideLoadingAnimation() {
+    document.getElementById("loading").style.display = "none";
+  }
+
+  hideLoadingAnimation();
+
   searchButton.addEventListener("click", function () {
     let company_name = getCompanyName();
 
     bodyEle.style.display = "none";
 
+    showLoadingAnimation();
+
     fetch(root_link + get_summary + "?company=" + company_name)
       .then((res) => {
+        hideLoadingAnimation();
         if (!res.ok) {
           throw new Error("network response was not ok");
         }
@@ -48,8 +61,6 @@ document.addEventListener("DOMContentLoaded", function () {
       .catch((err) =>
         console.log("There was an error with the fetch operation")
       );
-
-    console.log("Hello");
   });
 
   function staticCompanies(element, company) {

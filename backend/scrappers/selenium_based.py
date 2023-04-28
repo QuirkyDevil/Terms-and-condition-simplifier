@@ -54,7 +54,7 @@ def scrap_text(input_user):
 
         driver.execute_script("window.stop();")
 
-        print("the url name is: " + url_name.text)
+        
         url_company_name = input_user.replace(" ", "").lower()
 
         keywords = ["legal", "terms", "terms-of-use", "terms-and-conditions", "conditions", "policies", "terms-of-service", "servicesagreement", "condition", "term", "service"]
