@@ -1,7 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
   // your JavaScript code here
   const bodyEle = document.getElementById("body");
-  
 
   const summary = document.getElementById("summary");
   const userButton = document.getElementById("user_button");
@@ -22,8 +21,6 @@ document.addEventListener("DOMContentLoaded", function () {
     let company_input = document.getElementById("myInput");
     let company_name = company_input.value;
 
-    
-
     return company_name;
   }
 
@@ -41,15 +38,10 @@ document.addEventListener("DOMContentLoaded", function () {
         return res.json();
       })
       .then((data) => {
-        
         const summaryText = data.data.split("\n").join("<br /><br />");
         summary.innerHTML = summaryText;
       })
-      .catch((err) =>
-        {}
-      );
-
-    
+      .catch((err) => {});
   });
 
   function staticCompanies(element, company) {
@@ -64,7 +56,6 @@ document.addEventListener("DOMContentLoaded", function () {
           return res.json();
         })
         .then((data) => {
-          
           // add title to the summary
           const title = document.createElement("h1");
           title.innerHTML = company;
@@ -74,9 +65,7 @@ document.addEventListener("DOMContentLoaded", function () {
           const summaryText = data.data.split("\n").join("<br /><br />");
           summary.innerHTML = summaryText;
         })
-        .catch((err) =>
-          {}
-        );
+        .catch((err) => {});
     });
   }
 
@@ -99,14 +88,10 @@ document.addEventListener("DOMContentLoaded", function () {
         return res.json();
       })
       .then((data) => {
-        
         const summaryText = data.data.split("\n").join("<br /><br />");
-        
 
         summary.innerHTML = summaryText;
       })
-      .catch((err) =>
-        {}
-      );
+      .catch((err) => {});
   });
 });
