@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
   // your JavaScript code here
   const bodyEle = document.getElementById("body");
 
@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
     return company_name;
   }
 
-  searchButton.addEventListener("click", function () {
+  searchButton.addEventListener("click", () => {
     let company_name = getCompanyName();
 
     bodyEle.style.display = "none";
@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   function staticCompanies(element, company) {
-    element.addEventListener("click", function () {
+    element.addEventListener("click", () => {
       bodyEle.style.display = "none";
       fetch(root_link + get_summary + "?company=" + company)
         .then((res) => {
@@ -78,7 +78,7 @@ document.addEventListener("DOMContentLoaded", function () {
   staticCompanies(twitterBtn, "twitter");
   staticCompanies(microsoftBtn, "microsoft");
 
-  userButton.addEventListener("click", function () {
+  userButton.addEventListener("click", () => {
     const text = textarea.value;
 
     bodyEle.style.display = "none";
