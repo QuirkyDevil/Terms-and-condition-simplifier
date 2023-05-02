@@ -1,7 +1,6 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
   // your JavaScript code here
   const bodyEle = document.getElementById("body");
-  console.log(bodyEle);
 
   const summary = document.getElementById("summary");
   const userButton = document.getElementById("user_button");
@@ -22,12 +21,10 @@ document.addEventListener("DOMContentLoaded", function () {
     let company_input = document.getElementById("myInput");
     let company_name = company_input.value;
 
-    console.log(company_name);
-
     return company_name;
   }
 
-  searchButton.addEventListener("click", function () {
+  searchButton.addEventListener("click", () => {
     let company_name = getCompanyName();
 
     bodyEle.style.display = "none";
@@ -41,19 +38,16 @@ document.addEventListener("DOMContentLoaded", function () {
         return res.json();
       })
       .then((data) => {
-        console.log(data.data);
         const summaryText = data.data.split("\n").join("<br /><br />");
         summary.innerHTML = summaryText;
       })
-      .catch((err) =>
-        console.log("There was an error with the fetch operation")
-      );
-
-    console.log("Hello");
+      .catch((err) => {
+        summary.innerHTML = `There was an error with the fetch operation ${err}`;
+      });
   });
 
   function staticCompanies(element, company) {
-    element.addEventListener("click", function () {
+    element.addEventListener("click", () => {
       bodyEle.style.display = "none";
       fetch(root_link + get_summary + "?company=" + company)
         .then((res) => {
@@ -64,7 +58,6 @@ document.addEventListener("DOMContentLoaded", function () {
           return res.json();
         })
         .then((data) => {
-          console.log(data.data);
           // add title to the summary
           const title = document.createElement("h1");
           title.innerHTML = company;
@@ -74,9 +67,9 @@ document.addEventListener("DOMContentLoaded", function () {
           const summaryText = data.data.split("\n").join("<br /><br />");
           summary.innerHTML = summaryText;
         })
-        .catch((err) =>
-          console.log("There was an error with the fetch operation")
-        );
+        .catch((err) => {
+          summary.innerHTML = `There was an error with the fetch operation ${err}`;
+        });
     });
   }
 
@@ -85,7 +78,7 @@ document.addEventListener("DOMContentLoaded", function () {
   staticCompanies(twitterBtn, "twitter");
   staticCompanies(microsoftBtn, "microsoft");
 
-  userButton.addEventListener("click", function () {
+  userButton.addEventListener("click", () => {
     const text = textarea.value;
 
     bodyEle.style.display = "none";
@@ -99,14 +92,12 @@ document.addEventListener("DOMContentLoaded", function () {
         return res.json();
       })
       .then((data) => {
-        console.log(data.data);
         const summaryText = data.data.split("\n").join("<br /><br />");
-        console.log(data.data);
 
         summary.innerHTML = summaryText;
       })
-      .catch((err) =>
-        console.log("There was an error with the fetch operation")
-      );
+      .catch((err) => {
+        summary.innerHTML = `There was an error with the fetch operation ${err}`;
+      });
   });
 });
