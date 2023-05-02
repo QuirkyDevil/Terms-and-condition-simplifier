@@ -41,7 +41,9 @@ document.addEventListener("DOMContentLoaded", function () {
         const summaryText = data.data.split("\n").join("<br /><br />");
         summary.innerHTML = summaryText;
       })
-      .catch((err) => {});
+      .catch((err) => {
+        summary.innerHTML = `There was an error with the fetch operation ${err}`;
+      });
   });
 
   function staticCompanies(element, company) {
@@ -65,7 +67,9 @@ document.addEventListener("DOMContentLoaded", function () {
           const summaryText = data.data.split("\n").join("<br /><br />");
           summary.innerHTML = summaryText;
         })
-        .catch((err) => {});
+        .catch((err) => {
+          summary.innerHTML = `There was an error with the fetch operation ${err}`;
+        });
     });
   }
 
@@ -92,6 +96,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
         summary.innerHTML = summaryText;
       })
-      .catch((err) => {});
+      .catch((err) => {
+        summary.innerHTML = `There was an error with the fetch operation ${err}`;
+      });
   });
 });
