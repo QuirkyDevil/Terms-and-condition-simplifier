@@ -244,6 +244,7 @@ body {
   transform: translate(-50%, -50%);
   width: 80px;
   height: 80px;
+  margin-bottom: 20px;
 }
 .lds-ellipsis div {
   position: absolute;
@@ -293,4 +294,14 @@ body {
   100% {
     transform: translate(24px, 0);
   }
+}
+
+.jokes {
+  width: 80%;
+  font-size: 12px;
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -60%);
+  text-align: center;
 }

@@ -27,12 +27,40 @@ document.addEventListener("DOMContentLoaded", function () {
     return company_name;
   }
 
+  let terms_jokes = [
+    "I'm a Nigerian prince now thanks to the terms and conditions.",
+    "Relationships and terms and conditions have one thing in common: we don't read them, but still say 'I agree'.",
+    "Saying 'I have read and agree to the terms and conditions' is the internet's biggest lie, next to 'I have read the book'.",
+    "Terms and conditions: the best way to ensure no one reads your legal documents.",
+    "I rarely read terms and conditions, but when I do, they're incomprehensible.",
+    "Reading terms and conditions is like drinking orange juice after brushing your teeth: unpleasant and unnecessary.",
+    "Terms and conditions are like puzzles: you don't know the full picture until you put the pieces together.",
+    "By reading terms and conditions, you're  saving a lawyer's job somewhere.",
+    "Remember when we read books instead of terms and conditions?",
+    "In a world where no one reads terms and conditions, be the exception, and still don't read them.",
+    "Terms and conditions are like Jenga: one wrong move and the whole thing falls apart.",
+    "The twists and turns in terms and conditions are better than a soap opera.",
+    "I agree to the terms and conditions only because I can't live without cat videos.",
+    "By clicking 'I agree', you agree to sell your soul to the internet for eternity. Have a nice day!",
+    "I always read terms and conditions, but I still don't understand them.",
+  ];
+
+  let loadJoke = () => {
+    let index = Math.floor(Math.random() * terms_jokes.length);
+
+    return terms_jokes[index];
+  };
+
   function showLoadingAnimation() {
     document.getElementById("loading").style.display = "block";
+    document.getElementById("jokes").style.display = "block";
+
+    document.getElementById("jokes").innerHTML = loadJoke();
   }
 
   function hideLoadingAnimation() {
     document.getElementById("loading").style.display = "none";
+    document.getElementById("jokes").style.display = "none";
   }
 
   hideLoadingAnimation();
