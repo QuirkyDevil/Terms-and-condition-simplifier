@@ -8,9 +8,12 @@ from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.middleware.httpsredirect import HTTPSRedirectMiddleware
 
 
-from backend.functions.main import scrape_and_summarize
-from backend.functions.main import summerize_usertext
+from backend.functions.main import scrape_and_summarize, summerize_usertext
+
 import backend.config as settings
+
+from playwright.async_api import async_playwright, Playwright
+
 
 
 app = FastAPI(title="Terms and Condition Simplifier", version="1.0")
@@ -19,6 +22,8 @@ app.add_middleware(TrustedHostMiddleware, allowed_hosts=settings.ALLOWED_HOSTS)
 
 app.cache = None
 app.DB = None
+playwright: Playwright = None
+browser = None
 
 if settings.ENFORCE_SECURE_SCHEME:
     app.add_middleware(HTTPSRedirectMiddleware)
@@ -48,6 +53,9 @@ def _check_cache_driver() -> Tuple[type, str]:
 @app.on_event("startup")
 async def startup_event():
     """This function is called on startup and connects to the database and cache"""
+    global browser, playwright
+    playwright = await async_playwright().start()
+    browser = await playwright.chromium.launch(headless=False)    
     driver_class, _ = _check_driver()
     config = settings.DATABASE_DRIVERS["config"]
     driver = driver_class()
@@ -94,34 +102,40 @@ async def ping() -> JSONResponse:
 @app.get("/get_summary", tags=["general"])
 async def get_summary(company: str) -> JSONResponse:
     """Search."""
+    global browser
     check_cache = await app.cache.get(company)
     if not check_cache:
         check_db = await app.DB.search(company)
         if check_db:
-            await app.cache.set(company, check_db[1])
-            return {"status": 200, "data": check_db[1]}
+            await app.cache.set(company, check_db[1], check_db[2], check_db[3])
+            return {"status": 200, "data": {"summary": check_db[1], "date": check_db[2], "link": check_db[3], "source": "db"}}
         else:
-            result = await scrape_and_summarize(company)
+            result = await scrape_and_summarize(browser, company)
             if result:
-                await app.DB.add(company, result, datetime.datetime.now())
-                await app.cache.set(company, result)
-                return {"status": 200, "data": result}
+                await app.DB.add(company, result[0], datetime.datetime.now(), result[1])
+                await app.cache.set(company, result[0], datetime.datetime.now(), result[1])
+                return {"status": 200, "data": {"summary": result[0], "date": datetime.datetime.now(), "link": result[1], "source": "scrape"}}
             raise HTTPException(status_code=404, detail="Company Not Found!")
-    return {"status": 200, "data": check_cache}
+    return {"status": 200, "data": {"summary": check_cache[0], "date": check_cache[1], "link": check_cache[2], "source": "cache"}}
+
 
 
 @app.get("/search_summary", tags=["general"])
 async def search_summary(company: str) -> JSONResponse:
     """Search."""
-    result = await app.cache.search(company)
+    result = await app.cache.get(company)
     if result:
-        return {"status": 200, "data": result}
+        return {"status": 200, "data": {"summary": result[0], "date": result[1], "link": result[2], "source": "cache"}}
+    result = await app.DB.search(company)
+    if result:
+        await app.cache.set(company, result[1], result[2], result[3])
+        return {"status": 200, "data": {"summary": result[1], "date": result[2], "link": result[3], "source": "db"}}
     raise HTTPException(status_code=404, detail="Item not found")
 
 
 @app.get("/list_all", tags=["general"])
 async def list_companies() -> JSONResponse:
-    result = await app.cache.list_all()
+    result = await app.DB.list_all()
     if result:
         return {"status": 200, "data": result}
     raise HTTPException(status_code=404, detail="No items found")
@@ -130,23 +144,21 @@ async def list_companies() -> JSONResponse:
 @app.get("/add_company", tags=["general"])
 async def add(company: str) -> JSONResponse:
     """Add."""
-    result = await scrape_and_summarize(company)
+    global browser
+    result = await scrape_and_summarize(browser, company)
     if result:
-        await app.DB.add(company, result, datetime.datetime.now())
-        data = (result, datetime.datetime.now())
-        await app.cache.set(company, data)
-        return JSONResponse(content=result, status_code=200)
+        await app.DB.add(company, result[0], datetime.datetime.now(), result[1])
+        await app.cache.set(company, result[0], datetime.datetime.now(), result[1])
+        return {"status": 200, "data": {"summary": result[0], "date": datetime.datetime.now(), "link": result[1], "source": "scrape"}}
     raise HTTPException(status_code=404, detail="Company Not Found!")
 
 
-@app.get("/user_summary", tags=["general"])
+@app.post("/user_summary", tags=["general"])
 async def user_summary(text: str) -> JSONResponse:
     """Give summary of provided text/t&c by user."""
     result = await summerize_usertext(text)
-
     if result:
         return {"status": 200, "data": result}
-
     raise HTTPException(status_code=404, detail="Error while generating summary")
 
 
@@ -162,25 +174,26 @@ async def purge_cache(secret_key: str) -> JSONResponse:
 @app.put("/update", tags=["admin"])
 async def update(company: str, secret_key: str) -> JSONResponse:
     """Update Terms and condition summary of a company."""
+    global browser
     if secret_key != settings.SECRET_KEY:
         return JSONResponse(content={"error": "unauthorized"}, status_code=401)
-    summary = await scrape_and_summarize(company)
-    db_updated = await app.DB.update(company, summary, datetime.datetime.now())
+    summary = await scrape_and_summarize(browser, company)
+    db_updated = await app.DB.update(company, summary[0], datetime.datetime.now(), summary[1])
     cache_updated = await app.cache.update(company, summary)
     status_codes = 204
     if db_updated is False or cache_updated is False:
         status_codes = 500
-    return JSONResponse(content=None, status_code=status_codes)
+    return {"status": status_codes, "data": summary}
 
 
 @app.delete("/delete", tags=["admin"])
 async def delete(company: str, secret_key: str) -> JSONResponse:
     """Deletes a company from the database and cache."""
     if secret_key != settings.SECRET_KEY:
-        return JSONResponse(content={"error": "unauthorized"}, status_code=401)
+        return {"error": "unauthorized"}
     db_deleted = await app.DB.delete(company)
     cache_Deleted = await app.cache.delete(company)
     status_codes = 204
     if db_deleted is False or cache_Deleted or False:
         status_codes = 500
-    return JSONResponse(content=None, status_code=status_codes)
+    return {"status": status_codes, "data": "Deleted"}

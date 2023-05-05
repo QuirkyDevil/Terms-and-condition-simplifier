@@ -101,6 +101,18 @@ for epoch in range(10):
         loss.backward()
         optimizer.step()
         running_loss += loss.item()
-    print(
-        "Epoch {} Loss: {:.4f}".format(epoch + 1, running_loss / len(xsum_dataloader))
-    )
+    print(f"Epoch {epoch} loss: {running_loss}")
+    running_loss = 0.0
+    for batch in cnn_dataloader:
+        optimizer.zero_grad()
+        input_ids = batch["input_ids"].to(device)
+        attention_mask = batch["attention_mask"].to(device)
+        labels = batch["labels"].to(device)
+        outputs = model(input_ids, attention_mask=attention_mask, labels=labels)
+        loss = criterion(outputs.logits, labels)
+        loss.backward()
+        optimizer.step()
+        running_loss += loss.item()
+    print(f"Epoch {epoch} loss: {running_loss}")
+    torch.save(model.state_dict(), f"model_{epoch}.pth")
+    

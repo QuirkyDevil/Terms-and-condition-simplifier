@@ -1,11 +1,12 @@
 import asyncio
-from playwright.async_api import async_playwright
 import re
-from backend.scrappers.constants import *
+from backend.scrappers.constants import CONNECTION_NOT_PRIVATE, SITE_NOT_REACHABLE, URL_KEYWORDS
+from playwright.async_api import async_playwright
 
 URL_RX = re.compile(r"https?://(?:www\.)?.+")
 SENTECE_RX = re.compile(r"^[A-Z][^?!]*(?:\.[^?!]*)*\.$", re.MULTILINE)
-print("testing")
+BASE_URL = "https://www.google.com/search?q="
+TERMS_AND_CONDITIONS = "+terms+and+conditions"
 
 
 async def scrape_website(browser, url: str) -> tuple | int:
@@ -25,44 +26,36 @@ async def scrape_website(browser, url: str) -> tuple | int:
         return 500
 
 
-async def scrape(company: str) -> tuple | int:
-    async with async_playwright() as p:
-        browser = await p.chromium.launch(headless=False)
-        is_same_company = False
-        page = await browser.new_page()
-        await page.goto(
-            "https://www.google.com/search?q=" + company + "+terms+and+conditions",
-            wait_until="commit",
-        )
-        text_of_link = await page.inner_text("xpath=//h3[@class='LC20lb MBeuO DKV0Md']")
-        link = await page.inner_text("xpath=//cite[contains(@class, 'qLRx3b')]")
+async def scrape(browser, company: str) -> tuple | int:
+    page = await browser.new_page()
+    await page.goto(BASE_URL + company + TERMS_AND_CONDITIONS, wait_until="commit")
+    text_of_link = await page.inner_text("xpath=//h3[@class='LC20lb MBeuO DKV0Md']")
 
-        company_regex = re.compile(r"\b{}\b".format(re.escape(company)), re.IGNORECASE)
-        if company_regex.search(link):
-            is_same_company = True
-
-        if any(keyword in text_of_link.lower() for keyword in URL_KEYWORDS):
-            await page.click("xpath=//h3[@class='LC20lb MBeuO DKV0Md']")
-            # wait untill body loads
-            await page.wait_for_selector("xpath=//body")
-            text = await page.evaluate("document.body.innerText")
-            # filter the text so remove if there is no full stop
-            text = re.findall(SENTECE_RX, text)
-            text = "\n".join(text)
-            if CONNECTION_NOT_PRIVATE in text or SITE_NOT_REACHABLE in text:
-                await page.close()
-                return 500
-            await page.close()
-            return text
-        else:
+    if any(keyword in text_of_link.lower() for keyword in URL_KEYWORDS):
+        await page.click("xpath=//h3[@class='LC20lb MBeuO DKV0Md']")
+        # get link of the site 
+        await page.wait_for_selector("body")
+        #  some javascript thing to get some information about the site
+        text = await page.evaluate("document.body.innerText")
+        link = await page.evaluate("document.URL")
+        # get all the sentences from the text
+        text = re.findall(SENTECE_RX, text)
+        text = "\n".join(text)
+        
+        if CONNECTION_NOT_PRIVATE in text or SITE_NOT_REACHABLE in text:
             await page.close()
             return 500
+        await page.close()
+        return (text, link)
+    else:
+        await page.close()
+        return 500
 
 
 if __name__ == "__main__":
-
     async def main():
-        text = await scrape("alibaba")
+        playwright = await async_playwright().start()
+        browser = await playwright.chromium.launch(headless=False)   
+        text = await scrape(browser, "twitter")
         print(text)
-
     asyncio.run(main())

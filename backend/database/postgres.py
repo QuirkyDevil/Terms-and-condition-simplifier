@@ -1,4 +1,4 @@
-from _future_ import annotations
+from __future__ import annotations
 import asyncpg
 import asyncio
 from asyncpg.exceptions import PostgresError
@@ -87,10 +87,11 @@ class PostgresDriver(Driver):
             async with self._connection.acquire() as conn:
                 query = "SELECT * FROM major_project"
                 rows = await conn.fetch(query)
+                data = {row[0]: row[1:] for row in rows}
         except PostgresError:
             return []
         else:
-            return rows
+            return data
 
     async def count(self):
         """Count the number of rows in the table and return the count"""
@@ -102,7 +103,7 @@ class PostgresDriver(Driver):
             return 0
         else:
             return count
-
+        
     async def fill_cache(self):
         """Fill the cache with the rows from the table"""
         try:
@@ -147,20 +148,21 @@ _DRIVER = PostgresDriver
 _DRIVER_TYPE = "POSTGRES"
 
 
-if _name_ == "_main_":
-
+if __name__ == "__main__":
     async def main():
         driver = _DRIVER()
         try:
             await driver.connect(
-                connection_uri="",
+                connection_uri="postgresql://localhost/alex_testing?user=alex&password=euu",
                 max_size=100,
                 min_size=75,
-                table_name="",
+                table_name="major_project",
             )
-        except:
-            print("Error")
+        except Exception as e:
+            print(e)
         else:
-            print("Success")
+            result = await driver.list_all()
+            print(result[0])
 
+    
     asyncio.run(main())
