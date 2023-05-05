@@ -180,12 +180,14 @@ async def list_companies() -> JSONResponse:
         return {"status": 200, "data": result}
     raise HTTPException(status_code=404, detail="No items found")
 
+
 @app.get("/list_cache", tags=["general"])
 async def list_cache() -> JSONResponse:
     result = await app.cache.list_all()
     if result:
         return {"status": 200, "data": result}
     raise HTTPException(status_code=404, detail="No items found")
+
 
 @app.post("/user_summary", tags=["general"])
 async def user_summary(text: str) -> JSONResponse:
@@ -204,6 +206,7 @@ async def purge_cache(secret_key: str) -> JSONResponse:
     await app.cache.purge()
     return JSONResponse(content="Purged", status_code=200)
 
+
 @app.post("/purge_db", tags=["admin"])
 async def purge_db(secret_key: str) -> JSONResponse:
     """Purge entire database."""
@@ -211,6 +214,7 @@ async def purge_db(secret_key: str) -> JSONResponse:
         return JSONResponse(content={"error": "unauthorized"}, status_code=401)
     await app.DB.purge()
     return JSONResponse(content="Purged", status_code=200)
+
 
 @app.put("/update", tags=["admin"])
 async def update(company: str, secret_key: str) -> JSONResponse:

@@ -37,7 +37,9 @@ class PostgresDriver(Driver):
 
         return self._connection
 
-    async def add(self, company: str, summary: str, last_updated: str, link: str) -> bool:
+    async def add(
+        self, company: str, summary: str, last_updated: str, link: str
+    ) -> bool:
         """Add a row to the table and return whether the insert was done"""
         query = "INSERT INTO major_project (name, summary, last_updated, link) VALUES ($1, $2, $3, $4)"
         try:
@@ -59,7 +61,9 @@ class PostgresDriver(Driver):
         else:
             return row
 
-    async def update(self, company: str, summary: str, last_updated: str, link: str) -> bool:
+    async def update(
+        self, company: str, summary: str, last_updated: str, link: str
+    ) -> bool:
         """Update a row in the table and return whether the update was done"""
         query = "UPDATE major_project SET summary = $1, last_updated = $2, link = $3 WHERE name = $4"
         try:
@@ -137,7 +141,7 @@ class PostgresDriver(Driver):
         except PostgresError:
             return False
         else:
-            return True 
+            return True
 
     async def cleanup(self) -> None:
         """called when shutting down the server to close the connection"""

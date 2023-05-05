@@ -62,7 +62,7 @@ if __name__ == "__main__":
 
     async def main():
         playwright = await async_playwright().start()
-        browser = await playwright.chromium.launch(headless=False)        
+        browser = await playwright.chromium.launch(headless=False)
         text = await scrape(browser, "docs")
         print(text)
 
