@@ -61,9 +61,7 @@ class PostgresDriver(Driver):
 
     async def update(self, company: str, summary: str, last_updated: str, link: str):
         """Update a row in the table and return whether the update was done"""
-        query = (
-            "UPDATE major_project SET summary = $1, last_updated = $2, link = $3 WHERE name = $4"
-        )
+        query = "UPDATE major_project SET summary = $1, last_updated = $2, link = $3 WHERE name = $4"
         try:
             async with self._connection.acquire() as conn:
                 await conn.execute(query, summary, last_updated, link, company)
@@ -104,7 +102,7 @@ class PostgresDriver(Driver):
             return 0
         else:
             return count
-        
+
     async def fill_cache(self):
         """Fill the cache with the rows from the table"""
         try:
@@ -117,7 +115,7 @@ class PostgresDriver(Driver):
             # to dict where key is name and value is the row except name
             data = {row[0]: row[1:] for row in rows}
             return data
-        
+
     async def purge(self):
         """Purge the table"""
         try:
@@ -128,7 +126,7 @@ class PostgresDriver(Driver):
             return False
         else:
             return True
-        
+
     async def drop_table(self):
         """Drop the table"""
         try:
@@ -139,7 +137,7 @@ class PostgresDriver(Driver):
             return False
         else:
             return True
-    
+
     async def cleanup(self) -> None:
         """called when shutting down the server to close the connection"""
         return await self._connection.close()
@@ -150,6 +148,7 @@ _DRIVER_TYPE = "POSTGRES"
 
 
 if _name_ == "_main_":
+
     async def main():
         driver = _DRIVER()
         try:
@@ -163,5 +162,5 @@ if _name_ == "_main_":
             print("Error")
         else:
             print("Success")
-    
+
     asyncio.run(main())
