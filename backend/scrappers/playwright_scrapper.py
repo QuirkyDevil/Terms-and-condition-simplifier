@@ -1,6 +1,10 @@
 import asyncio
 import re
-from backend.scrappers.constants import CONNECTION_NOT_PRIVATE, SITE_NOT_REACHABLE, URL_KEYWORDS
+from backend.scrappers.constants import (
+    CONNECTION_NOT_PRIVATE,
+    SITE_NOT_REACHABLE,
+    URL_KEYWORDS,
+)
 from playwright.async_api import async_playwright
 
 URL_RX = re.compile(r"https?://(?:www\.)?.+")
@@ -33,7 +37,7 @@ async def scrape(browser, company: str) -> tuple | int:
 
     if any(keyword in text_of_link.lower() for keyword in URL_KEYWORDS):
         await page.click("xpath=//h3[@class='LC20lb MBeuO DKV0Md']")
-        # get link of the site 
+        # get link of the site
         await page.wait_for_selector("body")
         #  some javascript thing to get some information about the site
         text = await page.evaluate("document.body.innerText")
@@ -41,7 +45,7 @@ async def scrape(browser, company: str) -> tuple | int:
         # get all the sentences from the text
         text = re.findall(SENTECE_RX, text)
         text = "\n".join(text)
-        
+
         if CONNECTION_NOT_PRIVATE in text or SITE_NOT_REACHABLE in text:
             await page.close()
             return 500
@@ -53,9 +57,11 @@ async def scrape(browser, company: str) -> tuple | int:
 
 
 if __name__ == "__main__":
+
     async def main():
         playwright = await async_playwright().start()
-        browser = await playwright.chromium.launch(headless=False)   
+        browser = await playwright.chromium.launch(headless=False)
         text = await scrape(browser, "twitter")
         print(text)
+
     asyncio.run(main())

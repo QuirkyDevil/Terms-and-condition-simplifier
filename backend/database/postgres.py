@@ -103,7 +103,7 @@ class PostgresDriver(Driver):
             return 0
         else:
             return count
-        
+
     async def fill_cache(self):
         """Fill the cache with the rows from the table"""
         try:
@@ -149,6 +149,7 @@ _DRIVER_TYPE = "POSTGRES"
 
 
 if __name__ == "__main__":
+
     async def main():
         driver = _DRIVER()
         try:
@@ -164,5 +165,4 @@ if __name__ == "__main__":
             result = await driver.list_all()
             print(result[0])
 
-    
     asyncio.run(main())

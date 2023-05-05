@@ -27,7 +27,7 @@ class InMemoryCache(Cache):
         if summary is None:
             return None
         return summary
-    
+
     async def set(self, key: str, summary: str, date: str, link: str):
         """Set the summary and time last updated in the cache"""
         self._connection[key] = (summary, date, link)

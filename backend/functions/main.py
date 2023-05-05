@@ -41,6 +41,7 @@ async def summerize_usertext(text: str, points: int = 20):
     summary = await final_summary(negative_text, points)
     return summary
 
+
 async def summerize_userwebsite(browser, url: str):
     """This function will take input of site url and summerize the terms and conditions from it"""
     scrapped_text = await scrape_website(browser, url)
