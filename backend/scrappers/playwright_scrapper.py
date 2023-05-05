@@ -1,6 +1,6 @@
 import asyncio
 import re
-from backend.scrappers.constants import (
+from constants import (
     CONNECTION_NOT_PRIVATE,
     SITE_NOT_REACHABLE,
     URL_KEYWORDS,
@@ -38,8 +38,10 @@ async def scrape(browser, company: str) -> tuple | int:
     if any(keyword in text_of_link.lower() for keyword in URL_KEYWORDS):
         await page.click("xpath=//h3[@class='LC20lb MBeuO DKV0Md']")
         # get link of the site
-        await page.wait_for_selector("body")
+        print("this working?")
+        await page.wait_for_load_state("domcontentloaded")
         #  some javascript thing to get some information about the site
+        print("working?")
         text = await page.evaluate("document.body.innerText")
         link = await page.evaluate("document.URL")
         # get all the sentences from the text
@@ -60,8 +62,8 @@ if __name__ == "__main__":
 
     async def main():
         playwright = await async_playwright().start()
-        browser = await playwright.chromium.launch(headless=False)
-        text = await scrape(browser, "twitter")
+        browser = await playwright.chromium.launch(headless=False)        
+        text = await scrape(browser, "docs")
         print(text)
 
     asyncio.run(main())

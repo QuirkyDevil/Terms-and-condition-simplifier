@@ -173,33 +173,19 @@ async def search_summary(company: str) -> JSONResponse:
     raise HTTPException(status_code=404, detail="Item not found")
 
 
-@app.get("/list_all", tags=["general"])
+@app.get("/list_db", tags=["general"])
 async def list_companies() -> JSONResponse:
     result = await app.DB.list_all()
     if result:
         return {"status": 200, "data": result}
     raise HTTPException(status_code=404, detail="No items found")
 
-
-@app.get("/add_company", tags=["general"])
-async def add(company: str) -> JSONResponse:
-    """Add."""
-    global browser
-    result = await scrape_and_summarize(browser, company)
+@app.get("/list_cache", tags=["general"])
+async def list_cache() -> JSONResponse:
+    result = await app.cache.list_all()
     if result:
-        await app.DB.add(company, result[0], datetime.datetime.now(), result[1])
-        await app.cache.set(company, result[0], datetime.datetime.now(), result[1])
-        return {
-            "status": 200,
-            "data": {
-                "summary": result[0],
-                "date": datetime.datetime.now(),
-                "link": result[1],
-                "source": "scrape",
-            },
-        }
-    raise HTTPException(status_code=404, detail="Company Not Found!")
-
+        return {"status": 200, "data": result}
+    raise HTTPException(status_code=404, detail="No items found")
 
 @app.post("/user_summary", tags=["general"])
 async def user_summary(text: str) -> JSONResponse:
@@ -218,6 +204,13 @@ async def purge_cache(secret_key: str) -> JSONResponse:
     await app.cache.purge()
     return JSONResponse(content="Purged", status_code=200)
 
+@app.post("/purge_db", tags=["admin"])
+async def purge_db(secret_key: str) -> JSONResponse:
+    """Purge entire database."""
+    if secret_key != settings.SECRET_KEY:
+        return JSONResponse(content={"error": "unauthorized"}, status_code=401)
+    await app.DB.purge()
+    return JSONResponse(content="Purged", status_code=200)
 
 @app.put("/update", tags=["admin"])
 async def update(company: str, secret_key: str) -> JSONResponse:

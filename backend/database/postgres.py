@@ -37,34 +37,34 @@ class PostgresDriver(Driver):
 
         return self._connection
 
-    async def add(self, company: str, summary: str, last_updated: str, link: str):
+    async def add(self, company: str, summary: str, last_updated: str, link: str) -> bool:
         """Add a row to the table and return whether the insert was done"""
         query = "INSERT INTO major_project (name, summary, last_updated, link) VALUES ($1, $2, $3, $4)"
         try:
             async with self._connection.acquire() as conn:
-                await conn.execute(query, company, summary, last_updated, link)
-        except PostgresError as e:
-            print(e)
+                await conn.execute(query, company.lower(), summary, last_updated, link)
+        except PostgresError:
+            return False
         else:
             return True
 
     async def search(self, company: str):
         """Search for a row in the table and return the row"""
-        query = "SELECT * FROM major_project WHERE name = $1"
+        query = "SELECT * FROM major_project WHERE lower(name) = $1"
         try:
             async with self._connection.acquire() as conn:
-                row = await conn.fetchrow(query, company)
+                row = await conn.fetchrow(query, company.lower())
         except PostgresError:
             return None
         else:
             return row
 
-    async def update(self, company: str, summary: str, last_updated: str, link: str):
+    async def update(self, company: str, summary: str, last_updated: str, link: str) -> bool:
         """Update a row in the table and return whether the update was done"""
         query = "UPDATE major_project SET summary = $1, last_updated = $2, link = $3 WHERE name = $4"
         try:
             async with self._connection.acquire() as conn:
-                await conn.execute(query, summary, last_updated, link, company)
+                await conn.execute(query, summary, last_updated, link, company.lower())
         except PostgresError:
             return False
         else:
@@ -74,8 +74,8 @@ class PostgresDriver(Driver):
         """Delete a row from the table and return whether the delete was done"""
         try:
             async with self._connection.acquire() as conn:
-                query = "DELETE FROM major_project " "WHERE name = $1"
-                await conn.execute(query, name)
+                query = "DELETE FROM major_project WHERE lower(name) = $1"
+                await conn.execute(query, name.lower())
         except PostgresError:
             return False
         else:
@@ -89,11 +89,11 @@ class PostgresDriver(Driver):
                 rows = await conn.fetch(query)
                 data = {row[0]: row[1:] for row in rows}
         except PostgresError:
-            return []
+            return None
         else:
             return data
 
-    async def count(self):
+    async def count(self) -> int:
         """Count the number of rows in the table and return the count"""
         try:
             async with self._connection.acquire() as conn:
@@ -117,7 +117,7 @@ class PostgresDriver(Driver):
             data = {row[0]: row[1:] for row in rows}
             return data
 
-    async def purge(self):
+    async def purge(self) -> bool:
         """Purge the table"""
         try:
             async with self._connection.acquire() as conn:
@@ -128,7 +128,7 @@ class PostgresDriver(Driver):
         else:
             return True
 
-    async def drop_table(self):
+    async def drop_table(self) -> bool:
         """Drop the table"""
         try:
             async with self._connection.acquire() as conn:
@@ -137,7 +137,7 @@ class PostgresDriver(Driver):
         except PostgresError:
             return False
         else:
-            return True
+            return True 
 
     async def cleanup(self) -> None:
         """called when shutting down the server to close the connection"""
@@ -163,6 +163,6 @@ if __name__ == "__main__":
             print(e)
         else:
             result = await driver.list_all()
-            print(result[0])
+            print(result)
 
     asyncio.run(main())
