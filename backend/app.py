@@ -101,7 +101,6 @@ async def ping() -> JSONResponse:
 @app.get("/get_summary", tags=["general"])
 async def get_summary(company: str) -> JSONResponse:
     """Search."""
-    global browser
     check_cache = await app.cache.get(company)
     if not check_cache:
         check_db = await app.DB.search(company)
@@ -219,7 +218,6 @@ async def purge_db(secret_key: str) -> JSONResponse:
 @app.put("/update", tags=["admin"])
 async def update(company: str, secret_key: str) -> JSONResponse:
     """Update Terms and condition summary of a company."""
-    global browser
     if secret_key != settings.SECRET_KEY:
         return JSONResponse(content={"error": "unauthorized"}, status_code=401)
     summary = await scrape_and_summarize(browser, company)

@@ -55,7 +55,6 @@ def scrap_text(driver: webdriver, company_name: str):
     try:
         wait.until(EC.presence_of_element_located((By.XPATH, "//body")))
         driver.execute_script("window.stop();")
-        # TODO: As soon as the page loads, extract the text needed from the page and return it
         text = driver.execute_script("return document.body.innerText")
         if CONNECTION_NOT_PRIVATE in text:
             return 500
