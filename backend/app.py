@@ -52,7 +52,7 @@ def _check_cache_driver() -> Tuple[type, str]:
 @app.on_event("startup")
 async def startup_event():
     """This function is called on startup and connects to the database and cache"""
-    global browser, playwright
+    global browser, playwright #skipcq: PYL-W0603
     playwright = await async_playwright().start()
     browser = await playwright.chromium.launch(headless=False)
     driver_class, _ = _check_driver()
