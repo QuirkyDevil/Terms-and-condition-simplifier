@@ -182,6 +182,7 @@ async def list_companies() -> JSONResponse:
 
 @app.get("/list_cache", tags=["general"])
 async def list_cache() -> JSONResponse:
+    """List all items in cache."""
     result = await app.cache.list_all()
     if result:
         return {"status": 200, "data": result}

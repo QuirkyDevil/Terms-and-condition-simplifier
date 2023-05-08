@@ -8,7 +8,7 @@ from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.common.exceptions import TimeoutException
 
 
-from backend.scrappers.constants import *
+from backend.scrappers.constants import URL_KEYWORDS, CONNECTION_NOT_PRIVATE
 from backend.decorators.basic import executor
 
 
@@ -71,7 +71,7 @@ if __name__ == "__main__":
     capa = options.to_capabilities()
     capa["pageLoadStrategy"] = "none"
     chrome_driver = ChromeDriverManager().install()
-    driver = webdriver.Chrome(
+    drivers = webdriver.Chrome(
         service=ChromeService(chrome_driver), desired_capabilities=capa
     )
-    print(scrap_text(driver, "facebook"))
+    print(scrap_text(drivers, "facebook"))
