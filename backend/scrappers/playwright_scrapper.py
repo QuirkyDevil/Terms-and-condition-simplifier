@@ -18,6 +18,7 @@ def is_valid_url(url: str) -> bool:
     match_case = URL_RX.match(url)
     return bool(match_case)
 
+
 async def scrape_website(browser, url: str) -> tuple | int:
     """Scrape the website from url and return the text of the website"""
     if is_valid_url(url):
