@@ -33,7 +33,7 @@ async def scrape_website(browser, url: str) -> tuple | int:
                 return 500
             await page.close()
             return (text, False, url)
-        except Exception as e:
+        except Exception:
             await page.close()
             return 500
     else:
@@ -47,7 +47,7 @@ async def scrape(browser, company: str) -> tuple | int:
     # Try to navigate to the company's terms and conditions page
     try:
         await page.goto(BASE_URL + company + TERMS_AND_CONDITIONS, wait_until="commit")
-    except Exception as e:
+    except Exception:
         await page.close()
         return 500
 

@@ -163,7 +163,7 @@ if __name__ == "__main__":
                 min_size=75,
                 table_name="major_project",
             )
-        except Exception as e:
+        except PostgresError as e:
             print(e)
         else:
             result = await driver.list_all()
