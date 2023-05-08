@@ -12,6 +12,7 @@ async def preprocess(text):
     text = re.sub(r"<.*?>", "", text)  # remove html tags
     text = re.sub(r"[\n\t]+", " ", text)  # remove new lines and tabs
     text = re.sub(r" +", " ", text).strip()  # remove extra spaces
+    text = text.lower()  # convert to lowercase
     return text
 
 

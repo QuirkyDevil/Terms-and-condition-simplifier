@@ -4,8 +4,6 @@ import spacy
 from nltk.tokenize import sent_tokenize
 from transformers import BartTokenizer, BartForConditionalGeneration
 
-from backend.decorators.basic import ticktock_async
-
 t1 = time.time()
 model = BartForConditionalGeneration.from_pretrained("sshleifer/distilbart-cnn-12-6")
 tokenizer = BartTokenizer.from_pretrained("sshleifer/distilbart-cnn-12-6")
@@ -14,7 +12,6 @@ t2 = time.time()
 print(f"Time taken to load the models: {t2 - t1}")
 
 
-@ticktock_async
 async def final_summary(input_text, points: int = 20):
     """This is the summarizer corutine. In"""
     text = input_text

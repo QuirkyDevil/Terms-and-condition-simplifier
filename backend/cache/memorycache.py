@@ -28,9 +28,18 @@ class InMemoryCache(Cache):
             return None
         return summary
 
-    async def update(self, key: str, summary: str):
+    async def set(self, key: str, summary: str, date: str, link: str):
+        """Set the summary and time last updated in the cache"""
+        self._connection[key] = (summary, date, link)
+
+    async def set_many(self, data: Dict):
+        """Set many keys in the cache"""
+        for key, value in data.items():
+            self._connection[key] = value
+
+    async def update(self, key: str, summary: str, date: str, link: str):
         """Updates the summary and time last updated in the cache"""
-        self._connection[key] = summary
+        self._connection[key] = (summary, date, link)
 
     async def delete(self, key: str) -> bool:
         """Delete a document in the cache and return whether the delete succeeded or failed"""
@@ -44,10 +53,6 @@ class InMemoryCache(Cache):
     async def purge(self):
         """Purge the cache"""
         self._connection.clear()
-
-    async def set(self, key: str, summary: str):
-        """Set the summary and time last updated in the cache"""
-        self._connection[key] = summary
 
     async def list_all(self):
         """List all the keys in the cache"""
