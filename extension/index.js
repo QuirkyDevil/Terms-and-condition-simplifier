@@ -79,7 +79,9 @@ document.addEventListener("DOMContentLoaded", () => {
         return res.json();
       })
       .then((data) => {
-        const summaryText = data.data.split("\n").join("<br /><br />");
+        let status = data.data.status;
+        let dataParam = data.data.summary;
+        const summaryText = dataParam.split("\n").join("<br /><br />");
         summary.innerHTML = summaryText;
       })
       .catch((err) => {
@@ -105,7 +107,9 @@ document.addEventListener("DOMContentLoaded", () => {
           summary.appendChild(title);
           // add summary to the summary
 
-          const summaryText = data.data.split("\n").join("<br /><br />");
+          let dataParam = data.data.summary;
+
+          const summaryText = dataParam.split("\n").join("<br /><br />");
           summary.innerHTML = summaryText;
         })
         .catch((err) => {
@@ -133,7 +137,8 @@ document.addEventListener("DOMContentLoaded", () => {
         return res.json();
       })
       .then((data) => {
-        const summaryText = data.data.split("\n").join("<br /><br />");
+        let dataParam = data.data.summary;
+        const summaryText = dataParam.split("\n").join("<br /><br />");
 
         summary.innerHTML = summaryText;
       })
