@@ -9,7 +9,9 @@ model = BartForConditionalGeneration.from_pretrained("sshleifer/distilbart-cnn-1
 tokenizer = BartTokenizer.from_pretrained("sshleifer/distilbart-cnn-12-6")
 nlp = spacy.load("en_core_web_sm")
 t2 = time.time()
-print(f"\033[92m INFO:\033[0m     Time taken to load the models: {round((t2 - t1), 2)} seconds")
+print(
+    f"\033[92m INFO:\033[0m     Time taken to load the models: {round((t2 - t1), 2)} seconds"
+)
 
 
 async def final_summary(input_text, points: int = 20):
