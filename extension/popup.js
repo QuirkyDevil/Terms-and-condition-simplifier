@@ -20,8 +20,8 @@ let errorDesign = (message) => {
 
   let img = document.createElement("img");
   img.src = errorProperties.errorImage;
-  img.height = "90";
-  img.width = "90";
+  img.height = "70";
+  img.width = "70";
 
   let title = document.createElement("p");
   title.innerText = "Error!";
