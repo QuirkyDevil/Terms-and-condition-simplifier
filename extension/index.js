@@ -175,6 +175,45 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   };
 
+  let customTermsAndConditions = (text) => {
+    fetch(root_link + user_summary, {
+      method: "POST",
+      headers: {
+        "Content-Type": "text/plain",
+      },
+      body: text,
+    })
+      .then((res) => {
+        hideLoadingAnimation();
+        if (!res.ok) {
+          throw new Error("network response was not ok");
+          errorDesign("There was an internet connectivity issue");
+        }
+
+        return res.json();
+      })
+      .then((data) => {
+        let dataParam = data.data;
+        const summaryText = dataParam.split("\n").join("<br /><br />");
+        summary.innerHTML = summaryText;
+      })
+      .catch((err) => {
+        hideLoadingAnimation();
+
+        if (
+          err instanceof TypeError &&
+          err.message.includes("Failed to fetch")
+        ) {
+          errorDesign(errorProperties.internetIssues);
+        } else if (err.message.includes("net::ERR_CONNECTION_REFUSED")) {
+          errorDesign(errorProperties.internetIssues);
+        } else {
+          // Handle other types of errors
+          errorDesign(errorProperties.errorMessage);
+        }
+      });
+  };
+
   hideLoadingAnimation();
 
   searchButton.addEventListener("click", function () {
@@ -200,7 +239,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     bodyEle.style.display = "none";
     showLoadingAnimation();
-    fetchData(user_summary, "?text=", text);
+    customTermsAndConditions(text);
   });
 
   staticCompanies(googleBtn, "google");
