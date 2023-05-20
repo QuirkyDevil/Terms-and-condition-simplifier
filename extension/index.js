@@ -61,6 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   let errorProperties = {
+    internetIssues: "There was an internet issue. please try again",
     errorMessage: "Please double-check the company name and try again",
     errorImage: "./logos/file_error.png",
     errorJokeImage:
@@ -159,7 +160,18 @@ document.addEventListener("DOMContentLoaded", () => {
       })
       .catch((err) => {
         hideLoadingAnimation();
-        errorDesign(errorProperties.errorMessage);
+
+        if (
+          err instanceof TypeError &&
+          err.message.includes("Failed to fetch")
+        ) {
+          errorDesign(errorProperties.internetIssues);
+        } else if (err.message.includes("net::ERR_CONNECTION_REFUSED")) {
+          errorDesign(errorProperties.internetIssues);
+        } else {
+          // Handle other types of errors
+          errorDesign(errorProperties.errorMessage);
+        }
       });
   };
 
