@@ -71,6 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   let errorDesign = (message) => {
+    summary.innerHTML = "";
     let errorDiv = document.createElement("div");
     document.body.style.overflow = "hidden";
 
