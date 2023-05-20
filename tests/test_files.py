@@ -14,6 +14,6 @@ def test_empty_files():
 
 def test_empty_folders():
     for root, dirs, _ in os.walk("backend"):
-        for dir in dirs:
-            if not os.listdir(os.path.join(root, dir)):
-                shutil.rmtree(os.path.join(root, dir))
+        for directory in dirs:
+            if not os.listdir(os.path.join(root, directory)):
+                shutil.rmtree(os.path.join(root, directory))
