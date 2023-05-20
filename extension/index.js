@@ -134,6 +134,7 @@ document.addEventListener("DOMContentLoaded", () => {
     summary.appendChild(errorDiv);
     summary.style.height = "80vh";
 
+
     summary.style.display = "flex";
     summary.style.alignItems = "center";
     summary.style.justifyContent = "center";
@@ -142,7 +143,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let fetchData = (endPoint, parameter, company) => {
     fetch(root_link + endPoint + parameter + company)
-      .then((res) => {
+     .then((res) => {
         hideLoadingAnimation();
         if (!res.ok) {
           throw new Error("network response was not ok");
@@ -178,8 +179,10 @@ document.addEventListener("DOMContentLoaded", () => {
     element.addEventListener("click", () => {
       bodyEle.style.display = "none";
 
+
       showLoadingAnimation();
       fetchData(get_summary, "?company=", company);
+
     });
   }
 
@@ -187,8 +190,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const text = textarea.value;
 
     bodyEle.style.display = "none";
+
     showLoadingAnimation();
     fetchData(user_summary, "?text=", text);
+
   });
 
   staticCompanies(googleBtn, "google");
