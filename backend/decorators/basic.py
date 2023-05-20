@@ -45,6 +45,8 @@ def executor(loop: asyncio.AbstractEventLoop = None, thread_pool_executor=None):
     """
 
     def decorator(func):
+        """This is the decorator that will run the function in a thread pool executor."""
+
         @wraps(func)
         async def wrapper(*args, **kwargs):
             nonlocal loop, thread_pool_executor

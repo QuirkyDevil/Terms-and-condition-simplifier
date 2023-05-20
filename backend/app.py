@@ -174,6 +174,7 @@ async def search_summary(company: str) -> JSONResponse:
 
 @app.get("/list_db", tags=["general"])
 async def list_companies() -> JSONResponse:
+    """List all items in database."""
     result = await app.DB.list_all()
     if result:
         return {"status": 200, "data": result}

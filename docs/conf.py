@@ -68,8 +68,7 @@ html_theme_options: Dict[str, Any] = {
 
 
 def linkcode_resolve(domain, info):
-    # i absolutely MUST add this here or else
-    # the docs will not build. fuck sphinx
+    """Resolve a GitHub URL from of a function or class in a module."""
     try:
         if domain != "py":
             return None
@@ -98,5 +97,5 @@ def linkcode_resolve(domain, info):
         start, end = lines[1], lines[1] + len(lines[0]) - 1
 
         return f"https://github.com/QuirkyDevil/Terms-and-condition-simplifier/blob/main/{file}#L{start}-L{end}"
-    except:
+    except (ImportError, ModuleNotFoundError, SyntaxError, ValueError, TypeError):
         pass

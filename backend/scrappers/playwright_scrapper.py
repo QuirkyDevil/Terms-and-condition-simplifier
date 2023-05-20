@@ -41,6 +41,7 @@ async def scrape_website(browser, url: str) -> tuple | int:
 
 
 async def scrape(browser, company: str) -> tuple | int:
+    """scrape the terms and conditions from the company and return the text and link of the site"""
     page = await browser.new_page()
     await page.goto(BASE_URL + company + TERMS_AND_CONDITIONS, wait_until="commit")
     text_of_link = await page.inner_text("xpath=//h3[@class='LC20lb MBeuO DKV0Md']")

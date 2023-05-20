@@ -26,7 +26,6 @@ class PostgresDriver(Driver):
         )
 
         self._connection = pool
-        self.table = table_name
 
         # Creating the table in psql on connect
         # if it doesn't exist.
