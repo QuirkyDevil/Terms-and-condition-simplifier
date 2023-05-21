@@ -11,8 +11,10 @@ from fastapi.middleware.httpsredirect import HTTPSRedirectMiddleware
 from backend.functions.main import scrape_and_summarize, summerize_usertext
 import backend.config as settings
 
+
 class Text(BaseModel):
     text: str
+
 
 app = FastAPI(title="Terms and Condition Simplifier", version="1.0")
 app.add_middleware(CORSMiddleware, allow_origins=settings.CORS_ALLOWED_ORIGINS)
@@ -117,9 +119,7 @@ async def get_summary(company: str) -> JSONResponse:
         else:
             result = await scrape_and_summarize(browser, company)
             if result == 500:
-                raise HTTPException(
-                    status_code=404, detail="Company Not Found"
-                )
+                raise HTTPException(status_code=404, detail="Company Not Found")
             if result:
                 await app.DB.add(company, result[0], datetime.datetime.now(), result[1])
                 await app.cache.set(
@@ -225,9 +225,7 @@ async def update(company: str, secret_key: str) -> JSONResponse:
         return JSONResponse(content={"error": "unauthorized"}, status_code=401)
     summary = await scrape_and_summarize(browser, company)
     if summary == 500:
-        raise HTTPException(
-            status_code=404, detail="Company Not Found"
-        )
+        raise HTTPException(status_code=404, detail="Company Not Found")
     db_updated = await app.DB.update(
         company, summary[0], datetime.datetime.now(), summary[1]
     )
