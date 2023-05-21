@@ -45,7 +45,10 @@ async def scrape(browser, company: str) -> tuple | int:
     await page.goto(BASE_URL + company + TERMS_AND_CONDITIONS, wait_until="commit")
     text_of_link = await page.inner_text("xpath=//h3[@class='LC20lb MBeuO DKV0Md']")
 
-    if any(keyword in text_of_link.lower() for keyword in URL_KEYWORDS):
+    if (any(keyword in text_of_link.lower() for keyword in URL_KEYWORDS)
+        and
+        company.lower() in text_of_link.lower()
+        ):
         await page.click("xpath=//h3[@class='LC20lb MBeuO DKV0Md']")
         # get link of the site
         await page.wait_for_load_state("domcontentloaded")
