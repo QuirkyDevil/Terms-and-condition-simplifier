@@ -72,6 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   let errorDesign = (message) => {
+    summary.innerHTML = "";
     let errorDiv = document.createElement("div");
     document.body.style.overflow = "hidden";
 
@@ -176,12 +177,20 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   let customTermsAndConditions = (text) => {
+    let withoutNewlines = text.replace(/\n/g, "");
+    let withoutMultipleSpaces = withoutNewlines.replace(/\s+/g, " ");
+    let withoutSpaces = withoutMultipleSpaces.replace(/ /g, " ");
+    // POST request using fetch() and the payload data is in format of JSON string {"text": "text"}
+    const postData = {
+      text: withoutSpaces, // Replace with the actual user input text
+    };
+
     fetch(root_link + user_summary, {
       method: "POST",
       headers: {
-        "Content-Type": "text/plain",
+        "Content-Type": "application/json",
       },
-      body: text,
+      body: JSON.stringify(postData),
     })
       .then((res) => {
         hideLoadingAnimation();
