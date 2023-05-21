@@ -12,12 +12,14 @@ t2 = time.time()
 print(f"Time taken to load the models: {t2 - t1}")
 
 
+
 async def final_summary(input_text, points: int = 20):
     """This is the summarizer corutine. In"""
     text = input_text
     bullet_points = points
     final_output = []
     summary_bullet = ""
+    summaryPoint = 1
 
     while bullet_points >= points:
         # splitting the text into sentences
@@ -92,8 +94,11 @@ async def final_summary(input_text, points: int = 20):
         text = ".".join(final_output)
         bullet_points = len(final_output)
 
+    
+
     for i in range(len(final_output)):
-        final_output[i] = "* " + final_output[i] + "."
+        final_output[i] = f"{str(summaryPoint)}) " + final_output[i] + "."
+        summaryPoint += 1
 
     # final sentences are incoherent, so we will join them by bullet separator
     summary_bullet = "\n".join(final_output)
