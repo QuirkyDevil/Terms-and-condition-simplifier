@@ -17,7 +17,11 @@ class Text(BaseModel):
 
 
 app = FastAPI(title="Terms and Condition Simplifier", version="1.0")
-app.add_middleware(CORSMiddleware, allow_origins=settings.CORS_ALLOWED_ORIGINS)
+app.add_middleware(CORSMiddleware,
+                   allow_origins=settings.CORS_ALLOWED_ORIGINS,
+                   allow_methods=settings.CORS_ALLOWED_ORIGINS,
+                   allow_headers=settings.CORS_ALLOWED_ORIGINS,
+                   )
 app.add_middleware(TrustedHostMiddleware, allowed_hosts=settings.ALLOWED_HOSTS)
 
 app.cache = None

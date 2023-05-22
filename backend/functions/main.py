@@ -41,7 +41,6 @@ async def summerize_without_classify(browser, text: str, points: int = 20):
 async def summerize_usertext(text: str, points: int = 20):
     """This is a function that will directly take user inputed terms and conditions and summerize it"""
     text = await preprocess(text)
-    print("preprocess succesful")
     negative_text = await classify_sentiment(text)
     summary = await final_summary(negative_text, points)
     return summary
@@ -57,3 +56,4 @@ async def summerize_userwebsite(browser, url: str):
     negative_text = await classify_sentiment(text)
     summary = await final_summary(negative_text, 20)
     return summary
+

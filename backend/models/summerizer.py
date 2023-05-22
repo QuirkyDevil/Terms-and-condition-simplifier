@@ -1,6 +1,7 @@
 import math
 import time
 import spacy
+import asyncio
 from nltk.tokenize import sent_tokenize
 from transformers import BartTokenizer, BartForConditionalGeneration
 
@@ -36,6 +37,7 @@ async def final_summary(input_text, points: int = 20):
         for sentence in sentences.sents:
             chunks.append(str(sentence))
         # initializing the output list
+        print(len(chunks))
         output = []
         sentences_remaining = len(chunks)
         i = 0
@@ -109,3 +111,13 @@ async def final_summary(input_text, points: int = 20):
     # final sentences are incoherent, so we will join them by bullet separator
     summary_bullet = "\n".join(final_output)
     return summary_bullet
+
+if __name__ == "__main__":
+    text = ''
+    async def main():
+        with open("test.txt", "r") as f:
+            text = f.read()
+        summary = await final_summary(text, 20)
+        print(summary)
+
+    asyncio.run(main())
