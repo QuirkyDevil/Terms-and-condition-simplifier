@@ -56,4 +56,3 @@ async def summerize_userwebsite(browser, url: str):
     negative_text = await classify_sentiment(text)
     summary = await final_summary(negative_text, 20)
     return summary
-

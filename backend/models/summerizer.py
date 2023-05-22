@@ -112,8 +112,10 @@ async def final_summary(input_text, points: int = 20):
     summary_bullet = "\n".join(final_output)
     return summary_bullet
 
+
 if __name__ == "__main__":
-    text = ''
+    text = ""
+
     async def main():
         with open("test.txt", "r") as f:
             text = f.read()
