@@ -88,6 +88,10 @@ button.addEventListener("click", () => {
       let summary = document.createElement("p");
       summary.innerHTML = summaryText;
       div.appendChild(summary);
+
+      document.body.addEventListener("click", function () {
+        document.body.removeChild(div);
+      });
     })
     .catch((err) => {
       console.error("Error:", err);
