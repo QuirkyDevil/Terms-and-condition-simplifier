@@ -13,4 +13,8 @@ URL_KEYWORDS = [
     "condition",
     "term",
     "service",
+    "privacy",
+    "privacy policy",
+    "user agreement",
+    "user agreements",
 ]

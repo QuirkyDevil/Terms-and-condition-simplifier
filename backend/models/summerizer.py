@@ -37,7 +37,6 @@ async def final_summary(input_text, points: int = 20):
         for sentence in sentences.sents:
             chunks.append(str(sentence))
         # initializing the output list
-        print(len(chunks))
         output = []
         sentences_remaining = len(chunks)
         i = 0
