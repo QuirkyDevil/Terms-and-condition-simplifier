@@ -9,7 +9,7 @@ sys.path.insert(0, os.path.abspath(".."))
 
 project = "Terms and Condition Simplifier"
 copyright = "2023, Soham"
-author = "Soham, Shreyas, Mrinmayee, Aditya"
+author = "Soham, Shreyas, Mrinmayee"
 
 release = "1.0.0"
 

@@ -9,11 +9,20 @@ model = BartForConditionalGeneration.from_pretrained("sshleifer/distilbart-cnn-1
 tokenizer = BartTokenizer.from_pretrained("sshleifer/distilbart-cnn-12-6")
 nlp = spacy.load("en_core_web_sm")
 t2 = time.time()
-print(f"Time taken to load the models: {t2 - t1}")
+print(
+    f"\033[92m INFO:\033[0m     Time taken to load the models: {round((t2 - t1), 2)} seconds"
+)
 
 
 async def final_summary(input_text, points: int = 20):
-    """This is the summarizer corutine. In"""
+    """This is the summarizer corutine. In this we will summarize the text based on the number of bullet points given.
+    We will first split the text into sentences and then summarize them in batches. We will summarize the batches
+    based on their length. If the length of the batch is less than 100, we will summarize them directly. If the length
+    of the batch is greater than 1024, we will divide the batch into two and summarize them. If the length of the
+    summary is less than the length of the original text, we will append the summary to the output list. We will
+    continue this process until the number of bullet points is less than the number of points given. We will then
+    join the final sentences by bullet separator and return the summary.
+    """
     text = input_text
     bullet_points = points
     final_output = []

@@ -1,18 +1,19 @@
 import datetime
 import importlib
 from typing import Tuple
+from pydantic import BaseModel
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
+from playwright.async_api import async_playwright, Playwright
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.middleware.httpsredirect import HTTPSRedirectMiddleware
-
-
 from backend.functions.main import scrape_and_summarize, summerize_usertext
-
 import backend.config as settings
 
-from playwright.async_api import async_playwright, Playwright
+
+class Text(BaseModel):
+    text: str
 
 
 app = FastAPI(title="Terms and Condition Simplifier", version="1.0")
@@ -117,6 +118,8 @@ async def get_summary(company: str) -> JSONResponse:
             }
         else:
             result = await scrape_and_summarize(browser, company)
+            if result == 500:
+                raise HTTPException(status_code=404, detail="Company Not Found")
             if result:
                 await app.DB.add(company, result[0], datetime.datetime.now(), result[1])
                 await app.cache.set(
@@ -190,12 +193,11 @@ async def list_cache() -> JSONResponse:
 
 
 @app.post("/user_summary", tags=["general"])
-async def user_summary(text: str) -> JSONResponse:
+async def user_summary(text: Text) -> JSONResponse:
     """Give summary of provided text/t&c by user."""
-    result = await summerize_usertext(text)
+    result = await summerize_usertext(text.text)
     if result:
         return {"status": 200, "data": result}
-    raise HTTPException(status_code=404, detail="Error while generating summary")
 
 
 @app.post("/purge_cache", tags=["admin"])
@@ -222,6 +224,8 @@ async def update(company: str, secret_key: str) -> JSONResponse:
     if secret_key != settings.SECRET_KEY:
         return JSONResponse(content={"error": "unauthorized"}, status_code=401)
     summary = await scrape_and_summarize(browser, company)
+    if summary == 500:
+        raise HTTPException(status_code=404, detail="Company Not Found")
     db_updated = await app.DB.update(
         company, summary[0], datetime.datetime.now(), summary[1]
     )

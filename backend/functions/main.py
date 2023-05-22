@@ -14,6 +14,8 @@ async def scrape_and_summarize(browser, text: str, points: int = 20):
     sentences to be in the summary. Default is 20.
     """
     scrapped_text = await scrape(browser, text)
+    if scrapped_text == 500:
+        return 500
     text = scrapped_text[0]
     text = await preprocess(text)
     negative_text = await classify_sentiment(text)
@@ -29,6 +31,8 @@ async def summerize_without_classify(browser, text: str, points: int = 20):
     is 20 by default. You can change this by passing in the points argument.
     """
     scrapped_text = await scrape(browser, text)
+    if scrapped_text == 500:
+        return 500
     text = scrapped_text[0]
     summary = await final_summary(text, points)
     return (summary, scrapped_text[1])
@@ -37,6 +41,7 @@ async def summerize_without_classify(browser, text: str, points: int = 20):
 async def summerize_usertext(text: str, points: int = 20):
     """This is a function that will directly take user inputed terms and conditions and summerize it"""
     text = await preprocess(text)
+    print("preprocess succesful")
     negative_text = await classify_sentiment(text)
     summary = await final_summary(negative_text, points)
     return summary
@@ -45,6 +50,8 @@ async def summerize_usertext(text: str, points: int = 20):
 async def summerize_userwebsite(browser, url: str):
     """This function will take input of site url and summerize the terms and conditions from it"""
     scrapped_text = await scrape_website(browser, url)
+    if scrapped_text == 500:
+        return 500
     text = scrapped_text[0]
     text = await preprocess(text)
     negative_text = await classify_sentiment(text)
