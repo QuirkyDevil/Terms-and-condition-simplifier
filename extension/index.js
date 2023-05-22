@@ -142,7 +142,7 @@ document.addEventListener("DOMContentLoaded", () => {
     summary.style.overflow = "hidden";
   };
 
-  let fetchData = (endPoint, parameter, company) => {
+  let fetchData = (endPoint, parameter, company, source) => {
     fetch(root_link + endPoint + parameter + company)
       .then((res) => {
         hideLoadingAnimation();
@@ -156,8 +156,23 @@ document.addEventListener("DOMContentLoaded", () => {
       .then((data) => {
         let status = data.data.status;
         let dataParam = data.data.summary;
+
+        summary.style.padding = "15px";
+
         const summaryText = dataParam.split("\n").join("<br /><br />");
-        summary.innerHTML = summaryText;
+
+        // summary.innerHTML = summaryText;
+        let companyName;
+        if (source === "search") {
+          companyName = getCompanyName() + " terms and conditions:";
+        } else {
+          companyName = source + " terms and conditions:";
+        }
+        const companyUrl = data.data.link;
+
+        const summaryDescription = `<strong><h4>${companyName}</h4></strong><br><a href="${companyUrl}">${companyUrl}</a><br /><br />${summaryText}`;
+
+        summary.innerHTML = summaryDescription;
       })
       .catch((err) => {
         hideLoadingAnimation();
@@ -231,7 +246,7 @@ document.addEventListener("DOMContentLoaded", () => {
     bodyEle.style.display = "none";
 
     showLoadingAnimation();
-    fetchData(get_summary, "?company=", company_name);
+    fetchData(get_summary, "?company=", company_name, "search");
   });
 
   function staticCompanies(element, company) {
@@ -239,7 +254,7 @@ document.addEventListener("DOMContentLoaded", () => {
       bodyEle.style.display = "none";
 
       showLoadingAnimation();
-      fetchData(get_summary, "?company=", company);
+      fetchData(get_summary, "?company=", company, `${company}`);
     });
   }
 
