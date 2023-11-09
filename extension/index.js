@@ -17,6 +17,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const get_summary = "/get_summary";
   const user_summary = "/user_summary";
 
+  function capitalizeFirstLetter(str) {
+    return str.substring(0, 1).toUpperCase() + str.substring(1);
+  }
+
   function getCompanyName() {
     let company_input = document.getElementById("myInput");
     let company_name = company_input.value;
@@ -164,13 +168,14 @@ document.addEventListener("DOMContentLoaded", () => {
         // summary.innerHTML = summaryText;
         let companyName;
         if (source === "search") {
-          companyName = getCompanyName() + " terms and conditions:";
+          companyName = getCompanyName() + " terms and conditions";
         } else {
-          companyName = source + " terms and conditions:";
+          companyName = source + " terms and conditions";
         }
+        companyName = capitalizeFirstLetter(companyName);
         const companyUrl = data.data.link;
 
-        const summaryDescription = `<strong><h4>${companyName}</h4></strong><br><a href="${companyUrl}">${companyUrl}</a><br /><br />${summaryText}`;
+        const summaryDescription = `<strong><h2><center>${companyName}<center></h2></strong><br>${summaryText}<br><br> <strong><a href="${companyUrl}">Link of terms and conditions</a></strong>`;
 
         summary.innerHTML = summaryDescription;
       })
@@ -218,8 +223,9 @@ document.addEventListener("DOMContentLoaded", () => {
       })
       .then((data) => {
         let dataParam = data.data;
+        summary.style.padding = '15px';
         const summaryText = dataParam.split("\n").join("<br /><br />");
-        summary.innerHTML = summaryText;
+        summary.innerHTML = `<strong><h2><center>User input T&C<center></h2></strong><br>${summaryText}`;
       })
       .catch((err) => {
         hideLoadingAnimation();
@@ -241,9 +247,10 @@ document.addEventListener("DOMContentLoaded", () => {
   hideLoadingAnimation();
 
   searchButton.addEventListener("click", function () {
+    summary.innerText = '';
     let company_name = getCompanyName();
 
-    bodyEle.style.display = "none";
+    bodyEle.style.display = "none";  
 
     showLoadingAnimation();
     fetchData(get_summary, "?company=", company_name, "search");

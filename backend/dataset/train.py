@@ -114,4 +114,4 @@ for epoch in range(10):
         optimizer.step()
         running_loss += loss.item()
     print(f"Epoch {epoch} loss: {running_loss}")
-    torch.save(model.state_dict(), f"model_{epoch}.pth")
+model.save_pretrained("summerizer.bin")

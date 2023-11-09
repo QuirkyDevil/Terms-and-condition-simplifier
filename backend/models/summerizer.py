@@ -104,7 +104,7 @@ async def final_summary(input_text, points: int = 20):
         bullet_points = len(final_output)
 
     for i in range(len(final_output)):
-        final_output[i] = f"{str(summaryPoint)}) " + final_output[i] + "."
+        final_output[i] = f"<strong>{str(summaryPoint)})</strong> " + final_output[i] + "."
         summaryPoint += 1
 
     # final sentences are incoherent, so we will join them by bullet separator
@@ -113,11 +113,15 @@ async def final_summary(input_text, points: int = 20):
 
 
 if __name__ == "__main__":
-    text = ""
+    text = """This is the summarizer corutine. In this we will summarize the text based on the number of bullet points given.
+    We will first split the text into sentences and then summarize them in batches. We will summarize the batches
+    based on their length. If the length of the batch is less than 100, we will summarize them directly. If the length
+    of the batch is greater than 1024, we will divide the batch into two and summarize them. If the length of the
+    summary is less than the length of the original text, we will append the summary to the output list. We will
+    continue this process until the number of bullet points is less than the number of points given. We will then
+    join the final sentences by bullet separator and return the summary."""
 
     async def main():
-        with open("test.txt", "r") as f:
-            text = f.read()
         summary = await final_summary(text, 20)
         print(summary)
 
