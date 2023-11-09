@@ -104,7 +104,9 @@ async def final_summary(input_text, points: int = 20):
         bullet_points = len(final_output)
 
     for i in range(len(final_output)):
-        final_output[i] = f"<strong>{str(summaryPoint)})</strong> " + final_output[i] + "."
+        final_output[i] = (
+            f"<strong>{str(summaryPoint)})</strong> " + final_output[i] + "."
+        )
         summaryPoint += 1
 
     # final sentences are incoherent, so we will join them by bullet separator
