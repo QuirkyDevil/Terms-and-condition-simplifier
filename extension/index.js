@@ -223,7 +223,7 @@ document.addEventListener("DOMContentLoaded", () => {
       })
       .then((data) => {
         let dataParam = data.data;
-        summary.style.padding = '15px';
+        summary.style.padding = "15px";
         const summaryText = dataParam.split("\n").join("<br /><br />");
         summary.innerHTML = `<strong><h2><center>User input T&C<center></h2></strong><br>${summaryText}`;
       })
@@ -247,10 +247,10 @@ document.addEventListener("DOMContentLoaded", () => {
   hideLoadingAnimation();
 
   searchButton.addEventListener("click", function () {
-    summary.innerText = '';
+    summary.innerText = "";
     let company_name = getCompanyName();
 
-    bodyEle.style.display = "none";  
+    bodyEle.style.display = "none";
 
     showLoadingAnimation();
     fetchData(get_summary, "?company=", company_name, "search");
